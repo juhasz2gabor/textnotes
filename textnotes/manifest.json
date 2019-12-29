@@ -1,0 +1,35 @@
+{
+    "manifest_version": 2,
+
+    "name": "TextNotes",
+    "description": "TextNotes is a simple full screen note extension with basic features.",
+    "version": "1.6",
+
+    "author": "Gabor Juhasz",
+
+    "applications": {
+       "gecko": {
+           "id": "textnotes@gaborjuhaszprojects.com"
+       }
+    },
+
+    "background": {
+        "scripts": ["lib/logger/log.js", "background/background.js"]
+    },
+
+    "permissions": ["storage", "contextMenus"],
+
+    "browser_action": {
+        "browser_style" : true,
+        "default_icon": {
+            "16": "icons/textnotes.svg",
+            "32": "icons/textnotes.svg"
+        },
+        "default_title" : "TextNotes"
+    },
+    "icons": {
+        "32": "icons/textnotes.svg",
+        "48": "icons/textnotes.svg",
+        "96": "icons/textnotes.svg"
+    }
+}

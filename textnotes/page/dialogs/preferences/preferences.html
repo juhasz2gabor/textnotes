@@ -1,0 +1,29 @@
+<html>
+    <head>
+        <title>TextNotes Preferences</title>
+        <meta charset="UTF-8">
+        <base href="../../..">
+        <script type="text/javascript" src="lib/dialog/dialog_page_include.js"></script>
+        <script type="text/javascript" src="lib/pako/pako.js"></script>
+        <script type="text/javascript" src="lib/logger/log.js"></script>
+        <script type="text/javascript" src="page/io.js"></script>
+        <script type="text/javascript" src="page/model.js"></script>
+        <script type="text/javascript" src="page/dialogs/preferences/preferences.js"></script>
+        <link rel="stylesheet" type="text/css" href="page/dialogs/preferences/preferences.css">
+    </head>
+<body id="preferencesBody">
+    <fieldset>
+        <legend>Local Storage</legend>
+        <button id="exportButtonTn">Export</button>
+        <button id="exportButtonTxt">Export As Text</button>
+        <button id="advancedButton" class="rightAlign transparent">&nbsp;</button><br>
+        <button id="importButton">Import</button><br>
+        <input  id="fileSelector" class="hidden" type="file" accept=".tn,.txt">
+        <button id="deleteButton" class="rightAlign">Delete All</button>
+    </fieldset>
+    <fieldset id="devsettings" class="hidden">
+        <legend>Developer Settings</legend>
+        Log Level : <select id="logLevel"></select>
+    </fieldset>
+</body>
+</html>

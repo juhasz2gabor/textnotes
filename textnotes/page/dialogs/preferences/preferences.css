@@ -1,0 +1,40 @@
+legend
+{
+    padding-left: 8px;
+    padding-right: 8px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+button
+{
+    height: 30px;
+    padding-left: 8px;
+    padding-right: 8px;
+    width: 130px;
+    text-align: center;
+    margin-right: -3px;
+    margin-bottom: 5px
+}
+
+button::-moz-focus-inner
+{
+  border: 0;
+}
+
+.rightAlign
+{
+    float: right;
+}
+
+.hidden
+{
+    display: none;
+}
+
+.transparent
+{
+    background-color: transparent;
+    border: none;
+}

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <base href="../">
+        <link rel="stylesheet" type="text/css" href="lib/basiccontext/basicContext.css">
+        <link rel="stylesheet" type="text/css" href="lib/basiccontext/themes/light_textnotes.css">
+        <script type="text/javascript" src="lib/basiccontext/basicContext.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="lib/dialog/dialog.css">
+        <script type="text/javascript" src="lib/dialog/dialog.js"></script>
+
+        <script type="text/javascript" src="lib/logger/log.js"></script>
+        <script type="text/javascript" src="page/io.js"></script>
+        <script type="text/javascript" src="page/model.js"></script>
+        <script type="text/javascript" src="page/view.js"></script>
+        <script type="text/javascript" src="page/textnotes.js"></script>
+        <link rel="stylesheet" type="text/css" href="page/textnotes.css">
+  </head>
+  <body class="contextmenu" id="body">
+    <span class="taskItem" style="display:none"></span>
+    <table id="toolbar" class="toolbar" cellspacing="0" cellpadding="0">
+        <tr>
+            <td style="width:8%"></td>
+            <td><img id="addNoteIcon"      class="topIcon" title="New Note"      src="icons/addnote.svg"></td>
+            <td><img id="addSeparatorIcon" class="topIcon" title="New Separator" src="icons/addseparator.svg"></td>
+            <td><img id="deleteNoteIcon"   class="topIcon" title="Delete (del)"  src="icons/deletenote.svg"></td>
+            <td style="width:100%;"></td>
+            <td><img id="toolbarMenuIcon"  class="topIcon" title="Open Menu"     src="icons/menu.svg"></td>
+            <td style="width:8%"></td>
+        </tr>
+    </table>
+    <div tabindex="-1" id="taskListTop" class="taskListTop"></div>
+    <div tabindex="0" id="taskList" class="taskList"></div>
+    <div id="dragBar" class="dragBar"></div>
+    <textarea tabindex="0" class="textArea" id="textArea"></textarea>
+</body>
+</html>
