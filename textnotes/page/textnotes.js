@@ -795,7 +795,7 @@ function openToolBarMenu(event) {
             type:  'separator',
         }, {
             title: 'About',
-            fn : ()=>{},
+            fn : openAboutDialog,
             icon: 'aboutIconMenu'
         }];
 
@@ -816,12 +816,20 @@ function openPreferenceDialog() {
 
 function openHelpDialog() {
     let title = "Help";
-    let source = "about:blank"
-    let width = 650;
-    let height = 215;
+    let source = "page/dialogs/help/help.html"
+    let width = 770;
+    let height =495;
 
     dialog.show(title, source, width, height);
 }
 
+function openAboutDialog() {
+    let title = "About";
+    let source = "page/dialogs/about/about.html"
+    let width = 400;
+    let height = 255;
+
+    dialog.show(title, source, width, height);
+}
 
 window.onload = initTextNotes;

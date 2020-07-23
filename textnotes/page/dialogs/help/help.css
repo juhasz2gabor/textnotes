@@ -1,0 +1,209 @@
+body
+{
+    font-family : Arial;
+    font-size : 14px;
+    background-color: #FAFAFA;
+}
+
+h2
+{
+    margin-top: 0.75em;
+    margin-bottom: 0.5em;
+    margin-left: 0;
+    margin-right: 0;
+    font-weight: bold;
+    text-align: center;
+}
+
+h3
+{
+    margin-top: 0px;
+    margin-bottom: 0.15em;
+    margin-left: 1.5em;
+    margin-right: 0;
+    font-weight: normal;
+}
+
+h4
+{
+    margin-top: 1em;
+    margin-bottom: 0.15em;
+    margin-left: 1.5em;
+    margin-right: 0;
+    font-weight: bold;
+}
+
+a, a:visited, a:hover, a:active
+{
+    color : #1155CC;
+    text-decoration: none;
+    font-weight: normal;
+}
+
+a:hover
+{
+    text-decoration: none;
+    border-bottom: 1px solid #3377EE;
+}
+
+hr
+{
+    border : 1px solid #E0E0E0;
+    margin-bottom: 1em;
+}
+
+table, tr, td, th
+{
+    border: 1px solid #DADADA;
+    border-collapse: collapse;
+}
+
+.alsohere
+{
+    display: inline-block;
+    text-align: right;
+    width:100%;
+}
+
+.extlink
+{
+    color:#404040;
+}
+
+.top_margin
+{
+    margin-top : 5px;
+}
+
+.table_hot_key
+{
+    font-family : monospace;
+    font-size : 12px;
+    margin-left : 25%;
+    margin-bottom : 1em;
+    margin-top : 1em;
+    width : 65%;
+}
+
+.table_storage
+{
+    font-size : 14px;
+    margin-left : 25%;
+    margin-bottom : 1em;
+    margin-top : 1em;
+    width : 65%;
+}
+
+.table_undoredo
+{
+    font-family : monospace;
+    font-size : 12px;
+    margin-left : 25%;
+    margin-bottom : 1em;
+    margin-top : 1em;
+    width :35%;
+}
+
+.table_hot_key td:nth-child(1), .table_storage td:nth-child(1), .table_undoredo td:nth-child(1)
+{
+    text-align: right;
+    padding-right: 1em;
+
+}
+
+.table_hot_key td:nth-child(2), .table_storag td:nth-child(2), .table_undoredo td:nth-child(2)
+{
+    text-align: left;
+    padding-left: 1em;
+}
+
+img
+{
+    margin-left :10%;
+    margin-top :1.5em;
+    margin-bottom :1.5em;
+    border :1px solid #D0D0D0;
+}
+
+.preferenceimage
+{
+    width : 75%;
+}
+
+
+.exampleimage
+{
+}
+
+.title
+{
+    font-weight: bold;
+    margin-left: 0;
+    width:100%;
+    text-align: center;
+}
+
+.answer
+{
+    margin-top: 1em;
+    margin-bottom: 1em;
+    margin-left: 1.5em;
+    margin-right: 15%;
+    font-weight: normal;
+    font-size: 15px;
+    width:83%;
+}
+
+.gotop
+{
+    position:relative;
+    text-align: right;
+    float: right;
+}
+
+.warning
+{
+    font-weight: bold;
+    color : red;
+}
+
+.sourcecode
+{
+    font-family : "monospace";
+    font-size : 12px;
+    color: #0F0F0F;
+    width:100%;
+    background-color: #F0F0F0;
+}
+
+.nr
+{
+    color:#FF6F6F;
+}
+
+.donate
+{
+    margin-left: 0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    border: 0px;
+    text-align: center;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.pre_license
+{
+   font-family: monospace;
+   font-size: 12px;
+   background-color: #F2F2F2;
+}
+
+.number
+{
+    width: 2em;
+    display: inline-block;
+    text-align: right;
+    margin-right: 0.5em;
+}

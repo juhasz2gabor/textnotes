@@ -2,7 +2,7 @@
     "manifest_version": 2,
 
     "name": "TextNotes",
-    "description": "TextNotes is a simple full screen note extension with basic features.",
+    "description": "TextNotes is a simple note extension with basic features.",
     "version": "1.6",
 
     "author": "Gabor Juhasz",
@@ -17,7 +17,7 @@
         "scripts": ["lib/logger/log.js", "background/background.js"]
     },
 
-    "permissions": ["storage", "contextMenus"],
+    "permissions": ["storage", "unlimitedStorage", "contextMenus"],
 
     "browser_action": {
         "browser_style" : true,

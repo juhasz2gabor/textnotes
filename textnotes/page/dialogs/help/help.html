@@ -1,0 +1,356 @@
+<html>
+    <head>
+        <title>TextNotes Help Page</title>
+        <meta charset="UTF-8">
+        <script type="text/javascript" src="../../../lib/dialog/dialog_page_include.js"></script>
+        <link rel="stylesheet" type="text/css" href="help.css">
+        <script type="text/javascript" src="help.js"></script>
+    </head>
+<body id="helpBody">
+<span class="alsohere">See also here : <a target="_blank"
+href="https://juhasz2gabor.github.io/textnotes"><i>https://juhasz2gabor.github.io/textnotes</i></a>
+<span class="extlink" >[↷]</span></span><br>
+
+<h2 id="faq">Frequently Asked Questions</h2>
+<h3><span class="number">1.</span><a href="#main">Main features of TextNotes.</a></h3>
+<h3><span class="number">2.</span><a href="#keyboard">Keyboard support.</a></h3>
+<h3><span class="number">3.</span><a href="#saveload">Saving and loading data.</a></h3>
+<h3><span class="number">4.</span><a href="#where">Where does TextNotes store data?</a></h3>
+<h3><span class="number">5.</span><a href="#reliable">Is TextNotes reliable?</a></h3>
+<h3><span class="number">6.</span><a href="#storepassword">Is it safe to store my passwords in TextNotes?</a><h3>
+<h3><span class="number">7.</span><a href="#maintain">Does anybody maintain the TextNotes WebExtension?</a></h3>
+<h3><span class="number">8.</span><a href="#sourcecode">Can I see the source code of TextNotes?</a></h3>
+<h3><span class="number">9.</span><a href="#feed">Can TextNotes load data files created by users?</a></h3>
+<h3><span class="number">10.</span><a href="#knownbugs">Known bugs.</a></h3>
+<h3><span class="number">11.</span><a href="#newfeature">I need a new feature.</a></h3>
+<h3><span class="number">12.</span><a href="#newbug">I found a bug.</a></h3>
+<h3><span class="number">13.</span><a href="#donate">Can I donate some money?</a></h3>
+<h2>Troubleshooting</h2>
+<h3><span class="number">1.</span><a href="#fatal">TextNotes does not start or the toolbar icon has disappeared.</a></h3>
+<h3><span class="number">2.</span><a href="#removed">By mistake I selected all text in TextArea and everything
+    disappeared after pressing a button.</a></h3>
+<br>
+<hr>
+<h2 class="title" id="main">Main features of TextNotes</h2>
+<div class="answer">
+TextNotes is a simple note extension with basic features:
+<ul>
+    <li> Storing notes in the permanent storage of a browser
+    <li> Showing titles of notes in flat tree control
+    <li> Maintaining notes : <i>add</i>, <i>delete</i>, <i>drag&drop</i>, <i>context menu</i>
+    <li> Trashbin for deleted notes
+    <li> Keyboard support
+    <li> Saving and loading data
+    <li> Synchronization among multiple instances
+</ul>
+</div>
+<a class="gotop" href="#faq">Return to top</a><br>
+
+<hr>
+<h2 class="title" id="keyboard">Keyboard support</h2>
+<div class="answer">
+<i>Tree control</i> has focus :
+<table class="table_hot_key">
+<tr><th>Key(s)</th><th>Action</th></tr>
+<tr><td>Ins</td><td>New Note</td></tr>
+<tr><td>Shift+Ins</td><td>New Separator</td></tr>
+<tr><td>Del</td><td>Delete the current note</td></tr>
+<tr><td>Up Arrow</td><td>Show the previous note</td></tr>
+<tr><td>Down Arrow</td><td>Show the next note</td></tr>
+<tr><td>Tab</td><td>Jump to TextArea</td></tr>
+</table>
+<br>
+<i>TextArea</i> has focus :
+<table class="table_hot_key">
+<tr><th>Key(s)</th><th>Action</th></tr>
+<tr><td>Shift+Tab</td><td>Jump to Tree control</td></tr>
+</table>
+</div>
+<a class="gotop" href="#faq">Return to top</a><br>
+
+<hr>
+<h2 class="title" id="saveload">Saving and loading data.</h2>
+<div class="answer">
+You can save and load your notes via the <i>Preferences</i> menu item (top-right corner):
+<img class="preferenceimage" src="preferences.png"><br>
+TextNotes supports two kinds of file formats :
+<ul>
+    <li> Compressed files with a <b>.tn</b> extension
+    <li> Readable plain text files with a <b>.txt</b> extension
+</ul>
+You can save and load data using either kind.<br><br>
+The format of the plain text file is public so you can feed TextNotes with data files that you created.
+Details : <a href="#feed">Can TextNotes load data files created by users?</a>
+</div>
+<a class="gotop" href="#faq">Return to top</a><br>
+
+<hr>
+<h2 class="title" id="where">Where does TextNotes store the data?</h2>
+<div class="answer">
+TextNotes stores data on your local machine in permanent storage for WebExtensions.
+It is theoretically unlimited.
+Details : <a target="_blank" href="https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/storage/local">
+<i>Firefox Local Storage</i></a> <span class="extlink">[↷]</span><br>
+These data cannot directly be read by users.
+</div>
+<a class="gotop" href="#faq">Return to top</a><br>
+
+<hr>
+<h2 class="title" id="reliable">Is TextNotes reliable?</h2>
+<div class="answer">
+Yes, TextNotes is reliable if you use it in the proper way.<br><br>
+TextNotes stores the data in its own storage but this storage cannot be read by users.<br>
+You have to consider the value of your data and use some backup fitting the importance of your data.
+<br><br>
+You may face the following errors:<br>
+
+<h4>Some program error occurs and TextNotes destroys your data.</h4>
+It is a fact that there is no program without error. It can be a minor or a major error.<br>
+In the worst case scenario all of your data will be lost.<br>
+
+<h4>Firefox does not launch the TextNotes WebExtension.</h4>
+It is possible that Firefox does not launch TextNotes anymore.
+This error may come from Firefox or it could be a new release of TextNotes does not run on a
+certain version of Firefox.<br>
+This kind of error was observed in May 2019 when
+<a target="_blank" href="https://betanews.com/2019/05/04/mozilla-fixes-firefox-add-ons-problem/">
+<i>all Firefox add-ons stopped working for many days</i></a><span class="extlink">[↷]</span>.<br>
+Troubleshooting : <a href="#fatal">TextNotes does not start or the toolbar icon has disappeared.</a>
+
+<h4>Firefox does not start.</h4>
+It is possible that Firefox does not start anymore and of course TextNotes cannot be launched.
+Troubleshooting : <a href="#fatal">TextNotes does not start or the toolbar icon disappeared.</a><br>
+If you are lucky, your data are fine.
+
+<h4>Your storage device does not work anymore.</h4>
+This is probably the worst situation. If you are lucky you can copy some important files.
+All of your data will most probably be lost.
+
+<h4>Your computer does not work anymore.</h4>
+If you are lucky, your local storage (<i>HDD, SDD</i>) can be used in another computer and your data
+can be restored. In any event all of your data will be lost.
+<br><br><br>
+After considering the importance of your data you can decide what is the best level of protection for you:<br>
+<h4>Backup levels:</h4>
+<table class="table_storage">
+<tr><th>Level</th><th>Storage Place</th></tr>
+<tr><td>0.</td><td>No backup</td></tr>
+<tr><td>1.</td><td>Internal storage device - <i>SDD, HDD</i></td></tr>
+<tr><td>2.</td><td>External storage device(s) - <i>pendrive</i></td></tr>
+<tr><td>3.</td><td>Cloud drive - <i>Google, IBM, Amazon</i></td></tr>
+</table>
+If you have some sensitive data and you use some external storage the best thing if you crypt the backup file.<br><br>
+<span class="warning">Make backups regularly or as often as possible!</span>
+</div>
+<a class="gotop" href="#faq">Return to top</a><br>
+
+<hr>
+<h2 class="title" id="storepassword">Is it safe to store my passwords in TextNotes?</h2>
+<div class="answer">
+No, not at all.<br>
+You should not store your passwords or confidential information in TextNotes because
+TextNotes does not encrypt your notes and the storage area is not encrypted either.
+<br>If you want to store passwords just use a password manager.
+</div>
+<a class="gotop" href="#faq">Return to top</a><br>
+
+<hr>
+<h2 class="title" id="maintain">Does anybody maintain the TextNotes WebExtension?</h2>
+<div class="answer">
+Yes, TextNotes follows the new versions of Firefox. Besides manual testing,
+there are automated tests covering all of the features of TextNotes.<br>
+<br>
+TextNotes is regularly tested manually and by automated tests on :
+<ul>
+    <li>Windows and Linux operating systems.
+    <li>The previous, the current and the next versions of Firefox.
+    <li>The current version of Firefox ESR
+</ul>
+Take a look at a <a target="_blank" href="test_report.html"><i>test report of TextNotes</i>.</a>
+<span class="extlink">[↷]</span></a><br><br>
+<b>If a bug is found, it will be fixed and released immediately!</b>
+</div>
+<a class="gotop" href="#faq">Return to top</a><br>
+
+<hr>
+<h2 class="title" id="sourcecode">Can I see the source code of TextNotes?</h2>
+<div class="answer">
+Yes, it is open source.
+You can find it here : <a target="_blank" href="https://github.com/juhasz2gabor/textnotes"><i>TextNotes</i></a>
+<span class="extlink">[↷]
+</div>
+<a class="gotop" href="#faq">Return to top</a><br>
+
+<hr>
+<h2 class="title" id="feed">Can TextNotes load data files created by users?</h2>
+<div class="answer">
+Yes, the format is public :<br><br>
+
+<div class="sourcecode">
+<code class="sourcecode">
+unitSeparator = 0x1f // US <br>
+delimiter = "\n"${unitSeparator}<br>
+<br>
+<span class="nr">1:</span>TextNotes 0.1<br>
+<span class="nr">2:</span>${delimiter}&lt;SomeText&gt; // ignored<br>
+<span class="nr">3:</span>${delimiter}&lt;SomeText&gt; // ignored<br>
+<span class="nr">4:</span>${delimiter}&lt;SomeText&gt; // ignored<br>
+</code>
+</div>
+<br>
+After the 4th line, this pattern repeats:
+<br><br>
+
+<div class=sourcecode>
+<code class="sourcecode">
+${delimiter}("ITEM" | "SEPARATOR" | "TRASHBIN")"\n"<br>
+&lt;Any text without ${unitSeparator}&gt;</br>
+</code>
+</div>
+<br>
+Some extra rules:
+<ul>
+    <li>You need to have exactly one "TRASHBIN"
+    <li>"SEPARATOR" and "TRASHBIN" should not contain any text
+</ul>
+
+Example:<br>
+<img class="exampleimage" src="example.png">
+<div class="sourcecode">
+<code class="sourcecode">
+TextNotes 0.1<br>
+############################<br>
+# DO NOT MODIFY THIS FILE! #<br>
+############################<br>
+ITEM<br>
+Example note<br>
+SEPARATOR<br>
+<br>
+TRASHBIN<br>
+<br>
+ITEM<br>
+Note in trash<br>
+</code>
+</div>
+</div>
+<a class="gotop" href="#faq">Return to top</a><br>
+
+<hr>
+<h2 class="title" id="knownbugs">Known bugs</h2>
+<div class="answer">
+Currently there is one known bug. It is minor and occurs very rarely. Sometimes when you write some text
+in TextArea, characters do not immediately appear but there is some delay. You feel that your browser
+always gets stuck for a very short moment and CPU works a bit more. If you restart TextNotes, the bug should
+disappear.
+</div>
+<a class="gotop" href="#faq">Return to top</a><br>
+<hr>
+<h2 class="title" id="newfeature">I need a new feature</h2>
+<div class="answer">
+If you need a new feature just <a target="_blank" href="mailto:gabor.shepherd.work@gmail.com"><i>send the developer an email</i></a>
+<span class="extlink">[↷]</span>. If it is a minor thing, it can be in the next release.
+In any event, the state of TextNotes is in "feature freeze" at this time. An advanced <i>TextNotes2</i> is being
+developed which may contain your feature if it does not fit the current TextNotes.<br><br>
+Please be patient. It is just a hobby project!
+</div>
+<a class="gotop" href="#faq">Return to top</a><br>
+<hr>
+
+<h2 class="title" id="newbug">I found a bug</h2>
+<div class="answer">
+If you found a bug, please <a target="_blank" href="mailto:gabor.shepherd.work@gmail.com"><i>send the developer an email</i></a>
+<span class="extlink">[↷]</span>. The mail should contain the environmental information ( e.g. <i>operating system</i>,
+<i>version of Firefox</i> and <i>TextNotes</i>) where you use TextNotes and a description of the bug you have found.
+Try to write down the steps involved in how you can reproduce it. If it is a major bug, it will be fixed at once.<br><br>
+The first release of TextNotes was in September 2017 and since then there has been no report about any major
+software bug.
+</div>
+<a class="gotop" href="#faq">Return to top</a><br>
+<hr>
+
+<h2 class="title" id="donate">Can I donate some money?</h2>
+<div class="answer">
+If you are satisfied with TextNotes, please make a donation to support the development.
+<br><br>
+
+<form class="donate" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
+    <input type="hidden" name="cmd" value="_s-xclick" />
+    <input type="hidden" name="hosted_button_id" value="2LJM4TXPYRNCQ" />
+    <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
+</form>
+<br>
+<img class="donate" src="QRCode.png">
+<br>
+Thank you!
+<br>
+</div>
+<a class="gotop" href="#faq">Return to top</a><br>
+<hr>
+
+<h2 class="title" id="fatal">TextNotes does not start or the toolbar icon has disappeared</h2>
+<div class="answer">
+If you have some basic computer skills, you can attempt to solve problems yourself.
+If not, you should ask a professional to help you.<br><br>
+
+Many things can cause these problems including software or hardware bugs.<br><br>
+
+Before doing anything, make a backup of your Firefox profile(s) if it is possible:
+<ul>
+    <li> Close Firefox
+    <li> <a target="_blank" href="https://support.mozilla.org/en-US/kb/profiles-where-firefox-stores-user-data#w_finding-your-profile-without-opening-firefox">
+             <i>Find your profile without opening Firefox.</i></a><span class="extlink">[↷]</span>
+    <li> <a target="_blank"href="https://support.mozilla.org/en-US/kb/back-and-restore-information-firefox-profiles">
+             <i>Make a backup of your Firefox profile(s).</i></a><span class="extlink">[↷]</span>
+    <li> Copy the backup file(s) to some safe place, e.g. pendrive or cloud storage.
+</ul>
+It is possible that this profile backup can give you one more chance to get your data back.
+<br><br>
+And now go through the list and try to find your case.
+<ul>
+    <li><b>General issue with Firefox</b><br>
+        Check on the internet if there is any global problem with Firefox.<br>
+        This kind of error was observed in May 2019 when
+        <a target="_blank" href="https://betanews.com/2019/05/04/mozilla-fixes-firefox-add-ons-problem/">
+        <i>all Firefox add-ons stopped working for many days</i></a><span class="extlink">[↷]</span>.
+        If you have this kind of error, do not try to reinstall Firefox or TextNotes. Just wait for the fix.
+        It should come soon.
+
+    <li class="top_margin"><b>Disk is full or went wrong</b><br>
+        Check if your disk has free space and whether it is still healthy. If it has some problem, Firefox might not run
+        properly.
+
+    <li class="top_margin"><b>Firefox has just been upgraded</b><br>
+        Although the next versions of Firefox are always tested with TextNotes before releasing it, it is possible
+        that there is some fatal error meaning TextNotes cannot work anymore with new versions of Firefox.<br>
+        There are 2 things you can do:
+        <ul>
+            <li class="top_margin"><b>Wait for the new version of TextNotes which fixes the bug.</b> <br>
+                If it is a major bug, it will be fixed at once.<br>
+            <li class="top_margin"><b>Downgrade your Firefox</b><br>
+                Do this at your own risk :
+                <a target="_blank" href="https://support.mozilla.org/en-US/kb/install-older-version-of-firefox">
+                <i>Install an older version of Firefox</i></a><span class="extlink">[↷]</span>&nbsp; and then TextNotes
+                should work again.
+        </ul>
+    <li class="top_margin"><b>TextNotes has just been upgraded</b><br>
+        Although the new versions of TextNotes are always tested with the current version of Firefox, it is possible
+        that there is some fatal error meaning the new version of TextNotes cannot work anymore.
+        In this case you will have to wait for the fix. It will be available shortly.
+</ul>
+</div>
+<a class="gotop" href="#faq">Return to top</a><br>
+
+<h2 class="title" id="removed">By mistake I selected all text in TextArea<br>and everything has disappeared after
+pressing a button.</h2>
+<div class="answer">
+TextArea has an undo/redo feature that you can use in this case.
+<table class="table_undoredo">
+<tr><th>Key(s)</th><th>Action</th></tr>
+<tr><td>Ctrl+z</td><td>Undo</td></tr>
+<tr><td>Ctrl+y</td><td>Redo</td></tr>
+</table>
+</div>
+<a class="gotop" href="#faq">Return to top</a><br>
+
+</body>
+</html>

@@ -1,0 +1,84 @@
+body
+{
+    font-family : Arial;
+    font-size : 1em;
+    background-color: #FDFDFD;
+    margin-top : 1em;
+}
+
+table
+{
+    width: 100%;
+    text-align: left;
+    border-collapse: collapse;
+    padding : 0;
+}
+
+tr
+{
+    vertical-align: top;
+}
+
+ul
+{
+    margin-top: 2px;
+    margin-bottom :0;
+}
+
+a, a:visited, a:hover, a:active
+{
+    color : #1155CC;
+    text-decoration: none;
+    font-weight: normal;
+}
+
+a:hover
+{
+    text-decoration: none;
+}
+
+.h1
+{
+     font-size : 1.5em;
+}
+
+.h3
+{
+     font-size : 1.0em;
+     margin-left : 0.05em;
+     margin-bottom: 0.0em;
+}
+
+.normal_font
+{
+    font-style: normal;
+}
+
+.textNotesIcon
+{
+    width: 45px;
+    height: 45px;
+    border: 0;
+    pointer-events: none;
+}
+
+.link
+{
+    color : #1155CC;
+    font-weight: normal;
+    cursor:pointer
+}
+
+.copy
+{
+    cursor:copy
+}
+
+.flaticon
+{
+    text-align: left;
+    margin-top: 1em;
+    margin-right: 0;
+    margin-left : 0;
+    margin-bottom: 0;
+}
