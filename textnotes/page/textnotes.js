@@ -8,6 +8,8 @@ var dialog = null;
 var activeTaskItem = null;
 var openTrashbin = null;
 
+var disableTabInTextArea = false;
+
 async function initTextNotes() {
     log = await Logger.create();
     log.trace("Logger obj has been created successfully.")
@@ -236,6 +238,7 @@ function setTextAreaEvents() {
     let textArea = document.getElementById("textArea");
     textArea.oninput = textareaChanged;
     textArea.onfocus = setTaskListFocusOut;
+    textArea.onkeydown = keyDownEventsOnTextArea;
 
     log.trace("[EXIT]");
 }
@@ -350,16 +353,47 @@ function setActiveItem(newActiveTaskItem) {
     log.debug("[EXIT]");
 }
 
+function keyDownEventsOnTextArea(event) {
+    if (event.key !== "Tab" || disableTabInTextArea) return;
+
+    log.debug("[START]");
+    log.trace("KeyDown event : " + event.key);
+    log.trace("ShiftKey event : " + event.shiftKey);
+
+    if (!event.shiftKey)
+    {
+        const fakeTab = "    ";
+        const start = document.activeElement.selectionStart
+        const end = document.activeElement.selectionEnd;
+
+        document.getElementById("textArea").setRangeText(fakeTab, start, end, "end");
+        textareaChanged();
+
+        event.preventDefault();
+    }
+
+    log.debug("[EXIT]");
+}
+
 function keyDownEventsOnTaskList(event) {
-    if (event.key === "Tab")    return;
+    if (event.key === "Tab")  return;
 
     log.debug("[START]");
     log.debug("KeyDown event : " + event.key );
+    log.debug("CtrlKey event : " + event.ctrlKey );
 
     switch (event.key) {
         case "ArrowUp":
         case "ArrowDown":
             moveActiveItem(event)
+            break;
+
+        case "Insert":
+            if (event.ctrlKey) {
+                addSeparatorAction();
+            } else {
+                addNoteAction();
+            }
             break;
 
         case "Delete":

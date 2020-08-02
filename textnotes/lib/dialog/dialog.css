@@ -67,7 +67,8 @@
 .dialog-close:before
 {
     content: "×";
-    font-size: 20px;
+    font-size: 25px;
+    font-weight: bold;
     text-indent: 0;
     outline: none;
     text-align: center;

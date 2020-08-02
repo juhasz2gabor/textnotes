@@ -53,7 +53,7 @@ TextNotes is a simple note extension with basic features:
 <table class="table_hot_key">
 <tr><th>Key(s)</th><th>Action</th></tr>
 <tr><td>Ins</td><td>New Note</td></tr>
-<tr><td>Shift+Ins</td><td>New Separator</td></tr>
+<tr><td>Ctrl+Ins</td><td>New Separator</td></tr>
 <tr><td>Del</td><td>Delete the current note</td></tr>
 <tr><td>Up Arrow</td><td>Show the previous note</td></tr>
 <tr><td>Down Arrow</td><td>Show the next note</td></tr>
@@ -63,6 +63,7 @@ TextNotes is a simple note extension with basic features:
 <i>TextArea</i> has focus :
 <table class="table_hot_key">
 <tr><th>Key(s)</th><th>Action</th></tr>
+<tr><td>Tab</td><td>Half tab with spaces</td></tr>
 <tr><td>Shift+Tab</td><td>Jump to Tree control</td></tr>
 </table>
 </div>
@@ -238,10 +239,16 @@ Note in trash<br>
 <hr>
 <h2 class="title" id="knownbugs">Known bugs</h2>
 <div class="answer">
-Currently there is one known bug. It is minor and occurs very rarely. Sometimes when you write some text
+There are 2 known minor bugs:
+<ul>
+    <li><b>Browser gets stuck for a very short moment</b><br>
+Sometimes when you write some text
 in TextArea, characters do not immediately appear but there is some delay. You feel that your browser
 always gets stuck for a very short moment and CPU works a bit more. If you restart TextNotes, the bug should
-disappear.
+disappear.<br><br>
+    <li><b>In textarea <i>undo</i> does not work after pressing <i>tab</i> key.</b><br>
+In TextArea the <i>tab</i> key usage removes the undo/redo history.
+</ul>
 </div>
 <a class="gotop" href="#faq">Return to top</a><br>
 <hr>
