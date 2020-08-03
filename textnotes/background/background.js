@@ -62,31 +62,51 @@ function onRemovedTab(tabId) {
     log.debug("[EXIT]");
 }
 
-async function onClickedOnIcon() {
+async function onClickedOnIcon(_, clickData) {
     log.debug("[START]");
     log.debug("Opening a new TextNotes page");
 
     try {
-        let currentWindow = await browser.windows.getCurrent();
-        let existingTabId = await existingTab(currentWindow.id);
+        let textNotesURL = browser.extension.getURL("page/textnotes.html");
+        let newWindow = (clickData !== undefined) && (clickData.modifiers.includes("Ctrl"));
 
-        if (Number.isInteger(existingTabId)) {
-            log.debug("There is already a tab on this window, id :`" +
-                currentWindow.id + ":" + existingTabId + "`");
-
-            browser.tabs.update(existingTabId, { active: true });
+        if (newWindow) {
+            await browser.windows.create({ url: textNotesURL, type: "popup", state: "maximized" });
+            log.debug("New window has been created");
         } else {
-            log.debug("There is no tab on this window");
+            let currentWindow = await browser.windows.getCurrent();
+            let existingTabId = await existingTab(currentWindow.id);
 
-            let textNotesURL = browser.extension.getURL("page/textnotes.html");
-            let newTab = await browser.tabs.create({ url: textNotesURL });
-            tabs.add(newTab.id);
+            if (Number.isInteger(existingTabId)) {
+                log.debug("There is already a tab on this window, id :`" +
+                    currentWindow.id + ":" + existingTabId + "`");
 
-            log.debug("New tab has been created, id :`" +
-                currentWindow.id + ":" + newTab.id + "`");
+                browser.tabs.update(existingTabId, { active: true });
+            } else {
+                log.debug("There is no tab on this window");
+
+                let newTab = await browser.tabs.create({ url: textNotesURL });
+                tabs.add(newTab.id);
+                log.debug("New tab has been created, id :`" + currentWindow.id + ":" + newTab.id + "`");
+            }
         }
     } catch (e) {
         log.error("Page can not be created or updated :" + e);
+    }
+
+    log.debug("[EXIT]");
+}
+
+async function onCommand(command) {
+    log.debug("[START]");
+    log.debug("command :" + command);
+
+    if (command === "open-textnotes-tab") {
+        onClickedOnIcon();
+    } else if (command === "open-textnotes-popup") {
+        onClickedOnIcon("", { modifiers : ["Ctrl"] });
+    } else {
+        log.error("Unknown commands : " + command);
     }
 
     log.debug("[EXIT]");
@@ -99,6 +119,7 @@ async function initBackground() {
     tabs = new Set();
     createContextMenu();
     browser.browserAction.onClicked.addListener(onClickedOnIcon);
+    browser.commands.onCommand.addListener(onCommand);
     browser.tabs.onRemoved.addListener(onRemovedTab);
 
     log.info("Background has been initialized succesfully, version :" +

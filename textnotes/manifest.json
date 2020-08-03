@@ -17,7 +17,7 @@
         "scripts": ["lib/logger/log.js", "background/background.js"]
     },
 
-    "permissions": ["storage", "unlimitedStorage", "contextMenus"],
+    "permissions": ["storage", "unlimitedStorage", "contextMenus", "activeTab"],
 
     "browser_action": {
         "browser_style" : true,
@@ -31,5 +31,19 @@
         "32": "icons/textnotes.svg",
         "48": "icons/textnotes.svg",
         "96": "icons/textnotes.svg"
+    },
+    "commands": {
+        "open-textnotes-tab": {
+            "suggested_key": {
+                "default": "Ctrl+Alt+N"
+            },
+            "description": "Open TextNotes in tab"
+        },
+        "open-textnotes-popup": {
+            "suggested_key": {
+                "default": "Ctrl+Alt+M"
+            },
+            "description": "Open TextNotes in popup window"
+        }
     }
 }
