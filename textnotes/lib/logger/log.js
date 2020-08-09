@@ -1,9 +1,11 @@
 "use strict";
 
 class Logger {
-    constructor(pageId, logLevel) {
+    constructor(pageId, logLevel, windowId, tabId) {
         this._logLevel = Logger.Severity[logLevel];
         this._pageId = pageId;
+        this._windowId = windowId;
+        this._tabId = tabId;
 
         if (this._logLevel === undefined) {
             this._logLevel = Logger.Severity["INFO"];
@@ -55,6 +57,14 @@ class Logger {
 
     getId() {
         return this._pageId;
+    }
+
+    getWindowId() {
+        return this._windowId;
+    }
+
+    getTabId() {
+        return this._tabId;
     }
 
     getSeverityList() {
@@ -167,5 +177,5 @@ Logger.create = async function (noTabInfo = false, prefix = "") {
     let pageId = prefix + windowId + ":" + tabId;
     let logLevel = await Logger.getLogLevel();
 
-    return new Logger(pageId, logLevel);
+    return new Logger(pageId, logLevel, windowId, tabId);
 }

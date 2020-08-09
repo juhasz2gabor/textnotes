@@ -53,15 +53,6 @@ async function existingTab(windowId) {
     return returnValue;
 }
 
-function onRemovedTab(tabId) {
-    log.debug("[START]");
-
-    tabs.delete(tabId);
-    log.debug("Tab has been removed, tabId :" + tabId);
-
-    log.debug("[EXIT]");
-}
-
 async function onClickedOnIcon(_, clickData) {
     log.debug("[START]");
     log.debug("Opening a new TextNotes page");
@@ -86,7 +77,6 @@ async function onClickedOnIcon(_, clickData) {
                 log.debug("There is no tab on this window");
 
                 let newTab = await browser.tabs.create({ url: textNotesURL });
-                tabs.add(newTab.id);
                 log.debug("New tab has been created, id :`" + currentWindow.id + ":" + newTab.id + "`");
             }
         }
@@ -112,6 +102,33 @@ async function onCommand(command) {
     log.debug("[EXIT]");
 }
 
+function onMessage(message) {
+    log.debug("[START]");
+
+    if (message.hasOwnProperty("command") && message.hasOwnProperty("tabId")) {
+        switch(message.command) {
+            case "add" :
+                log.debug("Command :'add', tabId :" + message.tabId);
+                tabs.add(message.tabId);
+                break;
+
+            case "del" :
+                log.debug("Command :'del', tabId :" + message.tabId);
+                tabs.delete(message.tabId);
+                log.debug("Tab has been removed, tabId :" + message.tabId);
+                break;
+
+            default :
+            log.warning("Unknown command :" +  message.command);
+        }
+    } else {
+        log.warning("Unknown message!")
+    }
+    log.debug("TabIds : [ " + Array.from(tabs).join(', ') + " ]");
+
+    log.debug("[EXIT]");
+}
+
 async function initBackground() {
     log = await Logger.create(true);
     log.debug("[START]");
@@ -120,10 +137,9 @@ async function initBackground() {
     createContextMenu();
     browser.browserAction.onClicked.addListener(onClickedOnIcon);
     browser.commands.onCommand.addListener(onCommand);
-    browser.tabs.onRemoved.addListener(onRemovedTab);
+    browser.runtime.onMessage.addListener(onMessage);
 
-    log.info("Background has been initialized succesfully, version :" +
-        browser.runtime.getManifest().version);
+    log.info("Background has been initialized succesfully, version :" + browser.runtime.getManifest().version);
     log.debug("[EXIT]");
 }
 

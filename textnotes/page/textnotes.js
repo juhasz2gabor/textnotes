@@ -31,11 +31,37 @@ async function initTextNotes() {
         log.error("Version string of Manifest file is empty!");
     }
 
+    registerPage();
+
     log.debug("TextNotes is starting");
 
     document.title = "TextNotes";
 
     loadModel();
+
+    log.debug("[EXIT]");
+}
+
+function registerPage() {
+    log.debug("[START]");
+
+    let message = { command : "add", tabId : log.getTabId() };
+
+    browser.runtime.sendMessage(message).then(
+        ()    => { log.debug("Registration was successful!") },
+        (msg) => { log.debug("Error while registering the page :" + msg) });
+
+    log.debug("[EXIT]");
+}
+
+function unregisterPage() {
+    log.debug("[START]");
+
+    let message = { command : "del", tabId : log.getTabId() };
+
+    browser.runtime.sendMessage(message).then(
+        ()    => { log.debug("Unregistration was successful!") },
+        (msg) => { log.debug("Error while registering the page :" + msg) });
 
     log.debug("[EXIT]");
 }
@@ -224,6 +250,7 @@ function setPageEvents() {
     }
 
     window.addEventListener("beforeunload", onBeforeUnload);
+    window.addEventListener("unload", unregisterPage);
     document.querySelector("body").addEventListener("mouseleave", onMouseLeave);
     document.querySelector("body").oncontextmenu = enableTextAreaEvent;
 
