@@ -31,37 +31,11 @@ async function initTextNotes() {
         log.error("Version string of Manifest file is empty!");
     }
 
-    registerPage();
-
     log.debug("TextNotes is starting");
 
     document.title = "TextNotes";
 
     loadModel();
-
-    log.debug("[EXIT]");
-}
-
-function registerPage() {
-    log.debug("[START]");
-
-    let message = { command : "add", tabId : log.getTabId() };
-
-    browser.runtime.sendMessage(message).then(
-        ()    => { log.debug("Registration was successful!") },
-        (msg) => { log.debug("Error while registering the page :" + msg) });
-
-    log.debug("[EXIT]");
-}
-
-function unregisterPage() {
-    log.debug("[START]");
-
-    let message = { command : "del", tabId : log.getTabId() };
-
-    browser.runtime.sendMessage(message).then(
-        ()    => { log.debug("Unregistration was successful!") },
-        (msg) => { log.debug("Error while registering the page :" + msg) });
 
     log.debug("[EXIT]");
 }
@@ -123,11 +97,36 @@ function startTextNotes() {
     loadUIState();
     update();
     newVersionMessage();
+    registerPage();
 
     log.info("TextNotes started");
 
     log.debug("[EXIT]");
     }
+
+function registerPage() {
+    log.debug("[START]");
+
+    let message = { type: "register", command : "add", tabId : log.getTabId() };
+
+    browser.runtime.sendMessage(message).then(
+        ()    => { log.debug("Registration was successful!") },
+        (msg) => { log.error("Error while registering the page :" + msg) });
+
+    log.debug("[EXIT]");
+}
+
+function unregisterPage() {
+    log.debug("[START]");
+
+    let message = { type: "register", command : "del", tabId : log.getTabId() };
+
+    browser.runtime.sendMessage(message).then(
+        ()    => { log.debug("Unregistration was successful!") },
+        (msg) => { log.error("Error while registering the page :" + msg) });
+
+    log.debug("[EXIT]");
+}
 
 function initPage() {
     log.debug("[START]");
@@ -256,6 +255,21 @@ function setPageEvents() {
 
     io.setOnChanged(onStorageChanged);
 
+    browser.runtime.onMessage.addListener((msg) => {
+        log.trace("Message arrived : " + JSON.stringify(msg));
+
+        if (msg.hasOwnProperty("type") && msg["type"] === "new-note"
+            && msg.hasOwnProperty("target") && msg["target"] === log.getTabId()) {
+            if (msg.hasOwnProperty("text")) {
+                externalAddNoteAction(msg["text"]);
+            } else {
+                log.warning("Message was invalid : " + JSON.stringify(msg))
+            }
+        } else {
+            log.trace("Message has arrived but the target is other tab or message type was invalid!");
+        }
+    });
+
     log.trace("[EXIT]");
 }
 
@@ -369,8 +383,7 @@ function setActiveItem(newActiveTaskItem) {
 
     switchToNewContent(newActiveTaskItem);
 
-    document.getElementById(activeTaskItem).
-        classList.remove("taskItemActive", "taskItemActiveFocusOut");
+    document.getElementById(activeTaskItem).classList.remove("taskItemActive", "taskItemActiveFocusOut");
     document.getElementById(newActiveTaskItem).classList.add("taskItemActive");
 
     activeTaskItem = newActiveTaskItem;
@@ -489,6 +502,7 @@ function loadContent(leafId) {
     let leaf = model.getLeaf(leafId);
 
     textArea.value = leaf.text;
+    textArea.setSelectionRange(0, 0);
 
     log.debug("[EXIT]");
 }
@@ -560,9 +574,8 @@ function addNoteAction() {
 
     let leafId = model.addLeaf("ITEM", false);
 
-    if ( -1 < model.getIndexById(activeTaskItem) &&
-        activeTaskItem != model.trashbinId &&
-        ! model.isInTrashbin(activeTaskItem))  {
+    if ( -1 < model.getIndexById(activeTaskItem) && activeTaskItem != model.trashbinId &&
+        !model.isInTrashbin(activeTaskItem))  {
         model.moveLeafAfterLeaf2(leafId, activeTaskItem);
     }
 
@@ -571,6 +584,29 @@ function addNoteAction() {
     setActiveItem(leafId)
 
     log.debug("[EXIT]");
+}
+
+function externalAddNoteAction(text)
+{
+    log.debug("[START]");
+    log.trace("Text :" + text);
+
+    let leafId = model.addLeaf("ITEM", false, text);
+    model.moveLeafAfterLeaf2(leafId, "taskListTop");
+
+    updateTaskList()
+
+    setActiveItem(leafId);
+
+    const oldTitle = document.title;
+    const newTitle = "New Note - " + oldTitle;
+    document.title = newTitle;
+
+    setTimeout( () => { document.title = oldTitle; }, 2000);
+
+    log.debug("[EXIT]");
+
+    return leafId;
 }
 
 function addSeparatorAction() {
