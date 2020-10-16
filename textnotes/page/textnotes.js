@@ -7,8 +7,10 @@ var dialog = null;
 
 var activeTaskItem = null;
 var openTrashbin = null;
+var currentCursorPosition = null;
 
 var disableTabInTextArea = false;
+var capslockonSimulation = false;
 
 async function initTextNotes() {
     log = await Logger.create();
@@ -276,12 +278,134 @@ function setPageEvents() {
 function setTextAreaEvents() {
     log.trace("[START]");
 
+    let setCursorForOpenLink = (event) => {
+        if ((event.key === "Control") && !document.getElementById("textArea").readOnly) {
+            log.debug("[START]");
+            let textArea = document.getElementById("textArea");
+            textArea.classList.add("pointerCursor");
+            textArea.addEventListener("keyup", clearCursorForOpenLink);
+            textArea.removeEventListener("keydown", setCursorForOpenLink);
+            log.debug("[EXIT]");
+        }
+    }
+
+    let clearCursorForOpenLink = (event) => {
+        log.debug("[START]");
+        log.debug("Event :" + event.type);
+        let textArea = document.getElementById("textArea");
+        textArea.classList.remove("pointerCursor");
+        textArea.removeEventListener("keyup", clearCursorForOpenLink);
+        textArea.addEventListener("keydown", setCursorForOpenLink);
+        textArea.removeEventListener("mouseup", openSelectedUrlInTextArea);
+        textArea.removeEventListener("mousemove", openSelectedUrlInTextArea);
+        log.debug("[EXIT]");
+    }
+
     let textArea = document.getElementById("textArea");
-    textArea.oninput = textareaChanged;
+    textArea.addEventListener("keydown", setCursorForOpenLink);
+    textArea.addEventListener("mouseenter", clearCursorForOpenLink);
+    textArea.addEventListener("mouseleave", clearCursorForOpenLink);
+
+    let mouseDown = (event) => {
+        if (event.buttons === 1 && event.ctrlKey && !textArea.readOnly) {
+               log.debug("[START]");
+               const waitForCursorMs = 100;
+               let textArea = document.getElementById("textArea");
+               if (! textArea.classList.contains("pointerCursor")) {
+                   textArea.classList.add("pointerCursor");
+                   textArea.addEventListener("keyup", clearCursorForOpenLink);
+                   textArea.removeEventListener("keydown", setCursorForOpenLink);
+               }
+               textArea.selectionEnd = textArea.selectionStart;
+               window.setTimeout(selectUrlInTextAreaAtCursor, waitForCursorMs);
+        }
+    }
+
+    textArea.addEventListener("mousedown", mouseDown);
+
+    textArea.oninput = textAreaChanged;
     textArea.onfocus = setTaskListFocusOut;
-    textArea.onkeydown = keyDownEventsOnTextArea;
+    textArea.addEventListener("keydown", keyDownEventsOnTextArea);
 
     log.trace("[EXIT]");
+}
+
+function selectUrlInTextAreaAtCursor() {
+    log.debug("[START]")
+
+    let urlRe = /^((http|https|ftp|file):\/\/?)[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|\/?))/;
+    let wsRe = /\s/;
+
+    let getIndexAtEndOfWord = (string, begin) => {
+        log.trace("\tbegin :" + begin);
+        let end = begin;
+        for(;end < string.length && ! wsRe.test(string[end]);++end) {
+            log.trace("\tend :" + end);
+        }
+
+        return end;
+    };
+
+    let textArea = document.getElementById("textArea");
+    currentCursorPosition = textArea.selectionStart;
+    let begin = currentCursorPosition;
+    let end = getIndexAtEndOfWord(textArea.value, currentCursorPosition);
+    let existingPattern = false;
+
+    log.debug("Current :" + currentCursorPosition);
+    log.debug("End : " + end);
+    for(;begin >= 0 && !wsRe.test(textArea.value[begin]); --begin) {
+        let result = textArea.value.substring(begin, end).match(urlRe);
+        log.trace("Found :" + result);
+        if (result != null && (result[0].length + begin > currentCursorPosition)) {
+            log.debug("Result :" + result[0]);
+            existingPattern = true;
+            textArea.selectionStart = begin;
+            textArea.selectionEnd = begin + result[0].length;
+            textArea.addEventListener("mouseup", openSelectedUrlInTextArea);
+            textArea.addEventListener("mousemove", openSelectedUrlInTextArea);
+            break;
+        }
+    }
+
+    log.debug("Existing pattern :" + existingPattern);
+    log.debug("[EXIT]")
+}
+
+function openSelectedUrlInTextArea(event) {
+    log.debug("[START]");
+
+    let textArea = document.getElementById("textArea");
+    textArea.removeEventListener("mouseup", openSelectedUrlInTextArea);
+    textArea.removeEventListener("mousemove", openSelectedUrlInTextArea);
+
+    if (event.type === "mouseup" && event.ctrlKey && !textArea.readOnly) {
+        log.debug("MouseUp event");
+        let selectedText = textArea.value.substring(textArea.selectionStart, textArea.selectionEnd);
+        log.debug("Opening selected text : >>>" + selectedText + "<<<");
+
+        let onCreated = (tab) => {
+            log.debug("New tab has been created and id :`" + tab.id + "`");
+        };
+
+        let onError = (error) => {
+            log.warning("Error occured while creating tab :" + error);
+        }
+
+        const activeWindow = !(event.getModifierState("CapsLock") || window.capslockonSimulation);
+        if (activeWindow) {
+            log.debug("Foreground window");
+        } else {
+            log.debug("Background window");
+        }
+        browser.tabs.create({ url: selectedText, active: activeWindow }).then(onCreated, onError);
+        textArea.selectionStart = currentCursorPosition;
+        textArea.selectionEnd = textArea.selectionStart;
+    } else {
+        log.debug("Not MouseUp event");
+    }
+
+    log.debug("[EXIT]");
 }
 
 function setToolbarEvents() {
@@ -407,7 +531,7 @@ function keyDownEventsOnTextArea(event) {
         const end = document.activeElement.selectionEnd;
 
         document.getElementById("textArea").setRangeText(fakeTab, start, end, "end");
-        textareaChanged();
+        textAreaChanged();
 
         event.preventDefault();
     }
@@ -669,7 +793,7 @@ function deleteNoteAction() {
     log.debug("[EXIT]");
 }
 
-function textareaChanged(event) {
+function textAreaChanged(event) {
     log.trace("[START]");
 
     let textArea = document.getElementById("textArea");
@@ -915,7 +1039,7 @@ function openHelpDialog() {
     let title = "Help";
     let source = "page/dialogs/help/help.html"
     let width = 770;
-    let height = 520;
+    let height = 540;
 
     dialog.show(title, source, width, height);
 }

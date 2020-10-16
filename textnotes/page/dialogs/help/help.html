@@ -4,7 +4,6 @@
         <meta charset="UTF-8">
         <script type="text/javascript" src="../../../lib/dialog/dialog_page_include.js"></script>
         <link rel="stylesheet" type="text/css" href="help.css">
-        <script type="text/javascript" src="help.js"></script>
     </head>
 <body id="helpBody">
 <span class="alsohere">See also here : <a target="_blank"
@@ -15,17 +14,18 @@ href="https://juhasz2gabor.github.io/textnotes"><i>https://juhasz2gabor.github.i
 <h3><span class="number">1.</span><a href="#main">What are the main features of TextNotes?</a></h3>
 <h3><span class="number">2.</span><a href="#launch">How to launch TextNotes?</a></h3>
 <h3><span class="number">3.</span><a href="#keyboard">Is there keyboard support?</a></h3>
-<h3><span class="number">4.</span><a href="#saveload">Can I save and load data?</a></h3>
-<h3><span class="number">5.</span><a href="#where">Where does TextNotes store data?</a></h3>
-<h3><span class="number">6.</span><a href="#reliable">Is TextNotes reliable?</a></h3>
-<h3><span class="number">7.</span><a href="#storepassword">Is it safe to store my passwords in TextNotes?</a><h3>
-<h3><span class="number">8.</span><a href="#maintain">Does anybody maintain the TextNotes WebExtension?</a></h3>
-<h3><span class="number">9.</span><a href="#sourcecode">Can I see the source code of TextNotes?</a></h3>
-<h3><span class="number">10.</span><a href="#feed">Can TextNotes load data files created by users?</a></h3>
-<h3><span class="number">11.</span><a href="#knownbugs">Are there bugs in TextNotes?</a></h3>
-<h3><span class="number">12.</span><a href="#newfeature">What to do if I need a new feature?</a></h3>
-<h3><span class="number">13.</span><a href="#newbug">What to do if I find a bug?</a></h3>
-<h3><span class="number">14.</span><a href="#donate">Can I donate some money?</a></h3>
+<h3><span class="number">4.</span><a href="#hyperclick">How to use hyperclick?</a></h3>
+<h3><span class="number">5.</span><a href="#saveload">Can I save and load data?</a></h3>
+<h3><span class="number">6.</span><a href="#where">Where does TextNotes store data?</a></h3>
+<h3><span class="number">7.</span><a href="#reliable">Is TextNotes reliable?</a></h3>
+<h3><span class="number">8.</span><a href="#storepassword">Is it safe to store my passwords in TextNotes?</a><h3>
+<h3><span class="number">9.</span><a href="#maintain">Does anybody maintain the TextNotes WebExtension?</a></h3>
+<h3><span class="number">10.</span><a href="#sourcecode">Can I see the source code of TextNotes?</a></h3>
+<h3><span class="number">11.</span><a href="#feed">Can TextNotes load data files created by users?</a></h3>
+<h3><span class="number">12.</span><a href="#knownbugs">Are there bugs in TextNotes?</a></h3>
+<h3><span class="number">13.</span><a href="#newfeature">What to do if I need a new feature?</a></h3>
+<h3><span class="number">14.</span><a href="#newbug">What to do if I find a bug?</a></h3>
+<h3><span class="number">15.</span><a href="#donate">Can I donate some money?</a></h3>
 <h2>Troubleshooting</h2>
 <h3><span class="number">1.</span><a href="#fatal">TextNotes does not start or the toolbar icon has disappeared.</a></h3>
 <h3><span class="number">2.</span><a href="#removed">By mistake I selected all text in TextArea and everything
@@ -41,6 +41,7 @@ TextNotes is a simple note extension with basic features:
     <li> Maintaining notes : <i>add</i>, <i>delete</i>, <i>drag&drop</i>, <i>context menu</i>
     <li> Trashbin for deleted notes
     <li> Keyboard support
+    <li> Hyperclick on URLs, supporting foreground and background tabs
     <li> Saving and loading data
     <li> Adding any selected text on pages to TextNotes via context menu
     <li> Synchronization among multiple instances
@@ -95,7 +96,31 @@ menu after text selection and there is no running TextNotes in any window.
 <a class="gotop" href="#faq">Return to top</a><br>
 
 <hr>
-<h2 class="title" id="saveload">Can I see the source code of TextNotes?</h2>
+<h2 class="title" id="hyperclick">How to use hyperclick?</h2>
+<div class="answer">
+Mouse cursor on <i>TextArea</i>:
+<table class="table_hyperclick">
+<tr><th>Mouse + Key(s)</th><th>Action</th></tr>
+<tr><td>Ctrl + Long Click (CapsLock Off)</td><td>Open link in a new foreground tab</td></tr>
+<tr><td>Ctrl + Long Click (CapsLock On)</td><td>Open link in a new background tab</td></tr>
+</table>
+<b>How does it work?</b>
+<ol>
+    <li class="margin_bottom_little">
+        <i>Ctrl+MouseDown</i><br>TextNotes selects the link around the cursor in the same line.
+    <li>
+        <i>Ctrl+MouseUp</i><br>TextNotes opens the selected text as a link.<br>
+</ol>
+After pressing <i>Ctrl+MouseDown</i> you have to wait a moment so that link can be selected.<br>
+Do not move the mouse after pressing <i>Ctrl+MouseDown</i>!<br>
+<br>
+<b>Supported protocol names</b> : <i>http, https, ftp, file</i>
+</div>
+
+<a class="gotop" href="#faq">Return to top</a><br>
+
+<hr>
+<h2 class="title" id="saveload">Can I save and load data?</h2>
 <div class="answer">
 You can save and load your notes via the <i>Preferences</i> menu item (top-right corner):
 <img class="preferenceimage" src="preferences.png"><br>
@@ -165,7 +190,6 @@ After considering the importance of your data you can decide what is the best le
 <tr><td>2.</td><td>External storage device(s) - <i>pendrive</i></td></tr>
 <tr><td>3.</td><td>Cloud drive - <i>Google, IBM, Amazon</i></td></tr>
 </table>
-If you have some sensitive data and you use some external storage the best thing if you crypt the backup file.<br><br>
 <span class="warning">Make backups regularly or as often as possible!</span>
 </div>
 <a class="gotop" href="#faq">Return to top</a><br>

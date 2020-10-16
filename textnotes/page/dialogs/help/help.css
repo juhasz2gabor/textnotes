@@ -104,14 +104,24 @@ table, tr, td, th
     width :35%;
 }
 
-.table_hot_key td:nth-child(1), .table_storage td:nth-child(1), .table_undoredo td:nth-child(1)
+.table_hyperclick
+{
+    font-family : monospace;
+    font-size : 12px;
+    margin-left : 10%;
+    margin-bottom : 1em;
+    margin-top : 1em;
+    width : 90%;
+}
+
+.table_hot_key td:nth-child(1), .table_storage td:nth-child(1), .table_undoredo td:nth-child(1), .table_hyperclick td:nth-child(1)
 {
     text-align: right;
     padding-right: 1em;
 
 }
 
-.table_hot_key td:nth-child(2), .table_storag td:nth-child(2), .table_undoredo td:nth-child(2)
+.table_hot_key td:nth-child(2), .table_storage td:nth-child(2), .table_undoredo td:nth-child(2), .table_hyperclick td:nth-child(2)
 {
     text-align: left;
     padding-left: 1em;
@@ -206,4 +216,9 @@ img
     display: inline-block;
     text-align: right;
     margin-right: 0.5em;
+}
+
+.margin_bottom_little
+{
+    margin-bottom: 0.4em;
 }
