@@ -239,6 +239,16 @@ function setPageEvents() {
         }
     }
 
+    let onLostFocus = function(event) {
+        log.debug("Page::LostFocus");
+        if (model.isChanged()) {
+            log.debug("Data changed : Saving");
+            model.save();
+        } else {
+            log.debug("Data not changed : Not Saving");
+        }
+    }
+
     let onStorageChanged = function(changes, area) {
         log.debug("Storage has changed");
         reloadModel();
@@ -252,6 +262,7 @@ function setPageEvents() {
 
     window.addEventListener("beforeunload", onBeforeUnload);
     window.addEventListener("unload", unregisterPage);
+    window.addEventListener("blur", onLostFocus)
     document.querySelector("body").addEventListener("mouseleave", onMouseLeave);
     document.querySelector("body").oncontextmenu = enableTextAreaEvent;
 
