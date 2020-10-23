@@ -823,9 +823,7 @@ function dragStart(event) {
 
         case "SEPARATOR":
             log.debug("Type : SEPARATOR");
-            let image = new Image();
-            // image.src = "../icons/separator.png"
-            event.dataTransfer.setDragImage(image, event.clientX, 0);
+            event.dataTransfer.setDragImage(event.target, event.clientX / 4, 0);
             break;
 
         default:
