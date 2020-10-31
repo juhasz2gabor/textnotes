@@ -35,13 +35,13 @@
     "commands": {
         "open-textnotes-tab": {
             "suggested_key": {
-                "default": "Ctrl+Alt+N"
+                "default": "Ctrl+Alt+O"
             },
             "description": "Open TextNotes in tab"
         },
         "open-textnotes-popup": {
             "suggested_key": {
-                "default": "Ctrl+Alt+M"
+                "default": "Ctrl+Alt+P"
             },
             "description": "Open TextNotes in popup window"
         }
