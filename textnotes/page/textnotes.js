@@ -537,11 +537,11 @@ function keyDownEventsOnTextArea(event) {
 
     if (!event.shiftKey)
     {
-        const fakeTab = "    ";
+        const tab = "\t";
         const start = document.activeElement.selectionStart
         const end = document.activeElement.selectionEnd;
 
-        document.getElementById("textArea").setRangeText(fakeTab, start, end, "end");
+        document.getElementById("textArea").setRangeText(tab, start, end, "end");
         textAreaChanged();
 
         event.preventDefault();
@@ -585,7 +585,7 @@ function keyDownEventsOnTaskList(event) {
 function moveActiveItem(event) {
     log.debug("[START]");
 
-    let index = model.getIndexById(activeTaskItem);
+        let index = model.getIndexById(activeTaskItem);
 
     if (event.key === "ArrowUp") {
         --index;
