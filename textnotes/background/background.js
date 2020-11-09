@@ -1,7 +1,8 @@
 "use strict";
 
 let log = null;
-let tabs = null;
+let textnotesTabIds = null;
+let textNotesURL = "";
 
 const itemTextNotes = "textnotes";
 const itemAddText = "textnotes-selection"
@@ -55,8 +56,7 @@ async function existingTab(windowId) {
     log.trace("windowId :" + windowId);
 
     let returnValue = false;
-
-    for (let value of tabs) {
+    for (let value of textnotesTabIds) {
         log.trace("Checking tabId : " + value);
         try {
             let tab = await browser.tabs.get(value);
@@ -80,7 +80,6 @@ async function startTextNotes(_, clickData) {
     log.debug("Opening a new TextNotes page");
 
     try {
-        let textNotesURL = browser.extension.getURL("page/textnotes.html");
         let newWindow = (clickData !== undefined) && (clickData.modifiers.includes("Ctrl"));
 
         if (newWindow) {
@@ -111,9 +110,8 @@ async function startTextNotes(_, clickData) {
 async function addSelectedText(text) {
     log.debug("[START]");
 
-    if (tabs.size === 0) {
+    if (textnotesTabIds.size === 0) {
         log.debug("There is no existing TextNotes.")
-        let textNotesURL = browser.extension.getURL("page/textnotes.html");
         let currentWindow = await browser.windows.getCurrent();
         let newTab = await browser.tabs.create({ url: textNotesURL, active: false });
         log.debug("New tab has been created in background, id :`" + currentWindow.id + ":" + newTab.id + "`");
@@ -133,12 +131,12 @@ function addSelectedText2(text, timeoutSec) {
         return;
     }
 
-    if (tabs.size === 0) {
+    if (textnotesTabIds.size === 0) {
         log.debug("Waiting for TextNotes, timeout :" + timeoutSec);
         setTimeout( ()=>{ addSelectedText2(text, timeoutSec-1); }, 1000);
     } else {
         log.debug("Selected Text :" + text);
-        let msg = { target: Array.from(tabs)[0], type: "new-note", text: text };
+        let msg = { target: Array.from(textnotesTabIds)[0], type: "new-note", text: text };
         log.debug(JSON.stringify(msg));
 
         browser.runtime.sendMessage(msg).then(
@@ -178,24 +176,32 @@ function onMessage(message) {
         switch(message.command) {
             case "add" :
                 log.debug("Command :'add', tabId :" + message.tabId);
-                tabs.add(message.tabId);
-                break;
-
-            case "del" :
-                log.debug("Command :'del', tabId :" + message.tabId);
-                tabs.delete(message.tabId);
-                log.debug("Tab has been removed, tabId :" + message.tabId);
+                textnotesTabIds.add(message.tabId);
                 break;
 
             default :
-            log.warning("Unknown command :" +  message.command);
+                log.warning("Unknown command :" +  message.command);
         }
     } else {
         log.warning("Unknown message!")
     }
-    log.debug("TabIds : [ " + Array.from(tabs).join(', ') + " ]");
+    log.debug("TabIds : [ " + Array.from(textnotesTabIds).join(', ') + " ]");
 
     log.debug("[EXIT]");
+}
+
+function onUpdatedTab(tabId, changeInfo, tab) {
+    if (textnotesTabIds.has(tabId) && changeInfo.hasOwnProperty("status")) {
+        log.debug("Tab has been removed, tabId :`" + tabId + "`");
+        textnotesTabIds.delete(tabId);
+    }
+}
+
+function onRemovedTab(tabId) {
+    if (textnotesTabIds.has(tabId)) {
+        log.debug("Tab has been removed, tabId :`" + tabId + "`");
+        textnotesTabIds.delete(tabId);
+    }
 }
 
 function setContextMenuItem(info)
@@ -220,12 +226,17 @@ async function initBackground() {
     log = await Logger.create(true);
     log.debug("[START]");
 
-    tabs = new Set();
+    textnotesTabIds = new Set();
+    textNotesURL = browser.extension.getURL("page/textnotes.html");
+    log.debug("textNotesUrl : " + textNotesURL);
+
     createContextMenu();
     browser.browserAction.onClicked.addListener(startTextNotes);
     browser.commands.onCommand.addListener(onCommand);
     browser.runtime.onMessage.addListener(onMessage);
     browser.contextMenus.onShown.addListener(setContextMenuItem);
+    browser.tabs.onUpdated.addListener(onUpdatedTab);
+    browser.tabs.onRemoved.addListener(onRemovedTab);
 
     log.info("Background has been initialized succesfully, version :" + browser.runtime.getManifest().version);
     log.debug("[EXIT]");

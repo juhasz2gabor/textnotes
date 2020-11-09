@@ -98,34 +98,43 @@ function startTextNotes() {
     initPage();
     loadUIState();
     update();
-    newVersionMessage();
     registerPage();
-
-    log.info("TextNotes started");
-
     log.debug("[EXIT]");
     }
+
+function startTextNotes2() {
+    newVersionMessage();
+    log.info("TextNotes started");
+}
 
 function registerPage() {
     log.debug("[START]");
 
+    let doneHandler = function() {
+        log.debug("Registration was successful!");
+        startTextNotes2();
+    };
+
+    let errorHandler = function(msg) {
+        log.debug("[START]");
+
+        setPageHidden();
+        model.reset();
+
+        log.fatal("Fatal error while registering the page :" + msg);
+        alert("Some error occured while registering the page : " + msg + "\n\nRestart your browser!");
+
+        log.debug("[EXIT]");
+    };
+
     let message = { type: "register", command : "add", tabId : log.getTabId() };
 
-    browser.runtime.sendMessage(message).then(
-        ()    => { log.debug("Registration was successful!") },
-        (msg) => { log.error("Error while registering the page :" + msg) });
-
-    log.debug("[EXIT]");
-}
-
-function unregisterPage() {
-    log.debug("[START]");
-
-    let message = { type: "register", command : "del", tabId : log.getTabId() };
-
-    browser.runtime.sendMessage(message).then(
-        ()    => { log.debug("Unregistration was successful!") },
-        (msg) => { log.error("Error while registering the page :" + msg) });
+    try {
+        browser.runtime.sendMessage(message).then(doneHandler, errorHandler);
+    } catch (e) {
+        log.debug("Exception occured!");
+        errorHandler(e);
+    }
 
     log.debug("[EXIT]");
 }
@@ -261,7 +270,6 @@ function setPageEvents() {
     }
 
     window.addEventListener("beforeunload", onBeforeUnload);
-    window.addEventListener("unload", unregisterPage);
     window.addEventListener("blur", onLostFocus)
     document.querySelector("body").addEventListener("mouseleave", onMouseLeave);
     document.querySelector("body").oncontextmenu = enableTextAreaEvent;
