@@ -1,5 +1,7 @@
 "use strict";
 
+const pageTitle = "TextNotes";
+
 var log = null;
 var io = null;
 var model = null;
@@ -35,7 +37,7 @@ async function initTextNotes() {
 
     log.debug("TextNotes is starting");
 
-    document.title = "TextNotes";
+    document.title = pageTitle;
 
     loadModel();
 
@@ -736,16 +738,12 @@ function externalAddNoteAction(text)
 
     let leafId = model.addLeaf("ITEM", false, text);
     model.moveLeafAfterLeaf2(leafId, "taskListTop");
-
     updateTaskList()
-
     setActiveItem(leafId);
+    model.save();
 
-    const oldTitle = document.title;
-    const newTitle = "New Note - " + oldTitle;
-    document.title = newTitle;
-
-    setTimeout( () => { document.title = oldTitle; }, 2000);
+    document.title = "New Note - " + pageTitle;;
+    setTimeout( () => { document.title = pageTitle; }, 1500);
 
     log.debug("[EXIT]");
 

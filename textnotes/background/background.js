@@ -139,9 +139,14 @@ function addSelectedText2(text, timeoutSec) {
         let msg = { target: Array.from(textnotesTabIds)[0], type: "new-note", text: text };
         log.debug(JSON.stringify(msg));
 
-        browser.runtime.sendMessage(msg).then(
-            () => { log.debug("Sending 'new-note' command was successful.")},
-            (error) => { log.error("Error while sending 'new-note' command : " + error); });
+        try {
+            browser.runtime.sendMessage(msg).then(
+                () => { log.debug("Sending 'new-note' command was successful.")},
+                (error) => { log.error("Error while sending 'new-note' command : " + error); });
+        } catch(e) {
+            log.debug("Exception occured!");
+            log.error("Error while sending 'new-note' command : " + e);
+        }
     }
 
     log.debug("[EXIT]");
