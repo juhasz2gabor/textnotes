@@ -39,9 +39,13 @@ class IO {
             [this._key]: value
         };
 
-        let result = browser.storage.local.set(item);
-
-        result.then(callback, callbackError);
+        try {
+            let result = browser.storage.local.set(item);
+            result.then(callback, callbackError);
+        } catch(e) {
+            log.debug("Exception occured!");
+            callbackError(e);
+        }
 
         log.trace("[EXIT]");
     }
@@ -61,8 +65,13 @@ class IO {
                 callback(value);
             };
 
-        let result = browser.storage.local.get(this._key);
-        result.then(callbackExtraction, callbackError);
+        try {
+            let result = browser.storage.local.get(this._key);
+            result.then(callbackExtraction, callbackError);
+        } catch(e) {
+            log.debug("Exception occured!");
+            callbackError(e);
+        }
 
         log.trace("[END]");
     }
@@ -70,8 +79,13 @@ class IO {
     del(callback, callbackError) {
         log.trace("[START]");
 
-        let result = browser.storage.local.remove(this._key);
-        result.then(callback, callbackError);
+        try {
+            let result = browser.storage.local.remove(this._key);
+            result.then(callback, callbackError);
+        } catch(e) {
+            log.debug("Exception occured!");
+            callbackError(e);
+        }
 
         log.trace("[EXIT]");
     }
@@ -104,8 +118,13 @@ class IO {
             log.error(errorMessage);
             callbackError(errorMessage)
         } else {
-            let result = browser.storage.local.set({ [key]: value });
-            result.then(callback, callbackError);
+            try {
+                let result = browser.storage.local.set({ [key]: value });
+                result.then(callback, callbackError);
+            } catch(e){
+                log.debug("Exception occured!");
+                callbackError(e);
+            }
         }
 
         log.trace("[EXIT`]");
@@ -125,8 +144,13 @@ class IO {
                     callback(value);
                 };
 
-            let result = browser.storage.local.get(key);
-            result.then(callbackExtraction, callbackError);
+            try {
+                let result = browser.storage.local.get(key);
+                result.then(callbackExtraction, callbackError);
+            } catch(e) {
+                log.debug("Exception occured!");
+                callbackError(e);
+            }
         }
 
         log.trace("[EXIT]");
@@ -140,8 +164,13 @@ class IO {
             log.error(errorMessage);
             callbackError(errorMessage)
         } else {
-            let result = browser.storage.local.remove(key);
-            result.then(callback, callbackError);
+            try {
+                let result = browser.storage.local.remove(key);
+                result.then(callback, callbackError);
+            } catch(e) {
+                log.debug("Exception occured!");
+                callbackError(e);
+            }
         }
 
         log.trace("[EXIT]");

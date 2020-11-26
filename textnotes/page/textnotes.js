@@ -419,7 +419,14 @@ function openSelectedUrlInTextArea(event) {
         } else {
             log.debug("Background window");
         }
-        browser.tabs.create({ url: selectedText, active: activeWindow }).then(onCreated, onError);
+
+        try {
+            browser.tabs.create({ url: selectedText, active: activeWindow }).then(onCreated, onError);
+        } catch(e) {
+            log.debug("Exception occured!");
+            onError(e);
+        }
+
         textArea.selectionStart = currentCursorPosition;
         textArea.selectionEnd = textArea.selectionStart;
     } else {
