@@ -228,6 +228,11 @@ function setPageEvents() {
         log.debug("TextNotes is stopping");
         log.debug("Page::BeforeUnloadEvent");
 
+        if (window.errorOnPage) {
+            log.fatal("Fatal error on the page!, onBeforeUnload()");
+            return;
+        }
+
         if (model.isChanged()) {
             log.debug("Page::BeforeUnloadEvent::Changed");
             model.save();
@@ -242,6 +247,12 @@ function setPageEvents() {
 
     let onMouseLeave = function(event) {
         log.debug("Page::MouseLeave -> Saving data");
+
+        if (window.errorOnPage) {
+            log.fatal("Fatal error on the page!, onMouseLeave()");
+            return;
+        }
+
         if (model.isChanged()) {
             log.debug("Data changed : Saving");
             model.save();
@@ -252,6 +263,12 @@ function setPageEvents() {
 
     let onLostFocus = function(event) {
         log.debug("Page::LostFocus");
+
+        if (window.errorOnPage) {
+            log.fatal("Fatal error on the page!, onLostFocus()");
+            return;
+        }
+
         if (model.isChanged()) {
             log.debug("Data changed : Saving");
             model.save();
@@ -262,6 +279,12 @@ function setPageEvents() {
 
     let onStorageChanged = function(changes, area) {
         log.debug("Storage has changed");
+
+        if (window.errorOnPage) {
+            log.fatal("Fatal error on the page!, onStorageChanged()");
+            return;
+        }
+
         reloadModel();
     }
 
@@ -280,6 +303,11 @@ function setPageEvents() {
 
     browser.runtime.onMessage.addListener((msg) => {
         log.trace("Message arrived : " + JSON.stringify(msg));
+
+        if (window.errorOnPage) {
+            log.fatal("Fatal error on the page!, onMessage()");
+            return;
+        }
 
         if (msg.hasOwnProperty("type") && msg["type"] === "new-note"
             && msg.hasOwnProperty("target") && msg["target"] === log.getTabId()) {
@@ -602,7 +630,7 @@ function keyDownEventsOnTaskList(event) {
 function moveActiveItem(event) {
     log.debug("[START]");
 
-        let index = model.getIndexById(activeTaskItem);
+    let index = model.getIndexById(activeTaskItem);
 
     if (event.key === "ArrowUp") {
         --index;
