@@ -17,7 +17,7 @@
         "scripts": ["lib/logger/log.js", "background/background.js"]
     },
 
-    "permissions": ["storage", "unlimitedStorage", "contextMenus", "activeTab"],
+    "permissions": ["storage", "unlimitedStorage", "contextMenus", "activeTab", "notifications"],
 
     "browser_action": {
         "browser_style" : true,

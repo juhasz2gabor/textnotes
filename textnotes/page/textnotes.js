@@ -10,6 +10,7 @@ var dialog = null;
 var activeTaskItem = null;
 var openTrashbin = null;
 var currentCursorPosition = null;
+var notificationTimerId = 0;
 
 var disableTabInTextArea = false;
 var capslockonSimulation = false;
@@ -320,6 +321,9 @@ function setPageEvents() {
             log.trace("Message has arrived but the target is other tab or message type was invalid!");
         }
     });
+
+    browser.notifications.onClosed.addListener(() => { log.debug("Notification closed!")});
+    browser.notifications.onShown.addListener(() => { log.debug("Notification showed!")});
 
     log.trace("[EXIT]");
 }
@@ -777,8 +781,9 @@ function externalAddNoteAction(text)
     setActiveItem(leafId);
     model.save();
 
-    document.title = "New Note - " + pageTitle;;
-    setTimeout( () => { document.title = pageTitle; }, 1500);
+    const message = "Add selected text as a new note";
+    const durationMs = 2000;
+    showNotification(message, durationMs);
 
     log.debug("[EXIT]");
 
@@ -1101,6 +1106,48 @@ function openAboutDialog() {
     let height = 255;
 
     dialog.show(title, source, width, height);
+}
+
+async function showNotification(message, durationMs) {
+    log.trace("[START]");
+    log.trace("message :" + message + ", duration :" + durationMs);
+
+    const notificationId = "TextNotesNotification";
+
+    let clearNotification = async function() {
+        log.trace("[START]");
+
+        window.clearTimeout(notificationTimerId);
+        log.trace("Removed timer, notificationTimerId :" + notificationTimerId);
+
+        try {
+            let all = await browser.notifications.getAll();
+            log.trace("All :" + JSON.stringify(all));
+            if (Object.keys(all).length > 0) {
+                log.trace("Remove notification!");
+                await browser.notifications.clear(notificationId);
+            }
+        } catch(e) {
+            log.error("Some error occured :" + e);
+        }
+
+        log.trace("[EXIT]");
+    };
+
+    await clearNotification();
+
+    try {
+        let notificationOptions = { "type": "basic", "title": "TextNotes", "message": message };
+        await browser.notifications.create(notificationId, notificationOptions);
+        log.trace("Notification has been created!");
+    } catch(e) {
+        log.error("Some error occured :" + e);
+    }
+
+    notificationTimerId = window.setTimeout(clearNotification, durationMs);
+    log.trace("Added new timer, notificationTimerId :" + notificationTimerId);
+
+    log.trace("[EXIT]");
 }
 
 window.onload = initTextNotes;
