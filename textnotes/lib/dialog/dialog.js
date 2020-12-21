@@ -78,6 +78,7 @@ class Dialog {
         this.dialog.style.width = width + "px";
         this.dialog.style.height = height + "px";
         this.container.classList.add("visible");
+        this.content.focus()
     }
 
     hide() {

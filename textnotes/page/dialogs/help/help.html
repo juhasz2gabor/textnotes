@@ -8,25 +8,26 @@
     </head>
 <body id="helpBody">
 <span class="alsohere">See also here : <a target="_blank"
-href="https://juhasz2gabor.github.io/textnotes"><i>https://juhasz2gabor.github.io/textnotes</i></a>
+href="https://juhasz2gabor.github.io/textnotes"><i>https://juhasz2gabor.github.io/textnotes.help</i></a>
 <span class="extlink" >[↷]</span></span><br>
 
 <h2 id="faq">Frequently Asked Questions</h2>
 <h3><span class="number">1.</span><a href="#main">What are the main features of TextNotes?</a></h3>
-<h3><span class="number">2.</span><a href="#launch">How to launch TextNotes?</a></h3>
-<h3><span class="number">3.</span><a href="#keyboard">Is there keyboard support?</a></h3>
-<h3><span class="number">4.</span><a href="#hyperclick">How to use hyperclick?</a></h3>
-<h3><span class="number">5.</span><a href="#saveload">Can I save and load data?</a></h3>
-<h3><span class="number">6.</span><a href="#where">Where does TextNotes store data?</a></h3>
-<h3><span class="number">7.</span><a href="#reliable">Is TextNotes reliable?</a></h3>
-<h3><span class="number">8.</span><a href="#storepassword">Is it safe to store my passwords in TextNotes?</a><h3>
-<h3><span class="number">9.</span><a href="#maintain">Does anybody maintain the TextNotes WebExtension?</a></h3>
-<h3><span class="number">10.</span><a href="#sourcecode">Can I see the source code of TextNotes?</a></h3>
-<h3><span class="number">11.</span><a href="#feed">Can TextNotes load data files created by users?</a></h3>
-<h3><span class="number">12.</span><a href="#knownbugs">Are there bugs in TextNotes?</a></h3>
-<h3><span class="number">13.</span><a href="#newfeature">What to do if I need a new feature?</a></h3>
-<h3><span class="number">14.</span><a href="#newbug">What to do if I find a bug?</a></h3>
-<h3><span class="number">15.</span><a href="#donate">Can I donate some money?</a></h3>
+<h3><span class="number">2.</span><a href="#permissions">Which permissions does TextNotes need and why?</a></h3>
+<h3><span class="number">3.</span><a href="#launch">How to launch TextNotes?</a></h3>
+<h3><span class="number">4.</span><a href="#keyboard">Is there keyboard support?</a></h3>
+<h3><span class="number">5.</span><a href="#hyperclick">How to use hyperclick?</a></h3>
+<h3><span class="number">6.</span><a href="#saveload">Can I save and load data?</a></h3>
+<h3><span class="number">7.</span><a href="#where">Where does TextNotes store data?</a></h3>
+<h3><span class="number">8.</span><a href="#reliable">Is TextNotes reliable?</a></h3>
+<h3><span class="number">9.</span><a href="#storepassword">Is it safe to store my passwords in TextNotes?</a><h3>
+<h3><span class="number">10.</span><a href="#maintain">Does anybody maintain the TextNotes WebExtension?</a></h3>
+<h3><span class="number">11.</span><a href="#sourcecode">Can I see the source code of TextNotes?</a></h3>
+<h3><span class="number">12.</span><a href="#feed">Can TextNotes load data files created by users?</a></h3>
+<h3><span class="number">13.</span><a href="#knownbugs">Are there bugs in TextNotes?</a></h3>
+<h3><span class="number">14.</span><a href="#newfeature">What to do if I need a new feature?</a></h3>
+<h3><span class="number">15.</span><a href="#newbug">What to do if I find a bug?</a></h3>
+<h3><span class="number">16.</span><a href="#donate">How can I contribute to the TextNotes project?</a></h3>
 <h2>Troubleshooting</h2>
 <h3><span class="number">1.</span><a href="#fatal">TextNotes does not start or the toolbar icon has disappeared.</a></h3>
 <h3><span class="number">2.</span><a href="#removed">By mistake I selected all text in TextArea and everything
@@ -41,12 +42,27 @@ TextNotes is a simple note extension with basic features:
     <li> Showing titles of notes in flat tree control
     <li> Maintaining notes : <i>add</i>, <i>delete</i>, <i>drag&drop</i>, <i>context menu</i>
     <li> Trashbin for deleted notes
+    <li> Changing TextArea size
     <li> Keyboard support
     <li> Hyperclick on URLs, supporting foreground and background tabs
     <li> Saving and loading data
     <li> Adding any selected text on pages to TextNotes via context menu
     <li> Synchronization among multiple instances
 </ul>
+</div>
+<a class="gotop" href="#faq">Return to top</a><br>
+
+<hr>
+<h2 class="title" id="permissions">Which permissions does TextNotes need and why?</h2>
+<div class="answer">
+<table class="table_permissions">
+<tr><th>Permission</th><th>Description</th></tr>
+<tr><td>storage</td><td>Local storage area</td></tr>
+<tr><td>unlimitedStorage</td><td>Unlimited storage for heavy users</td></tr>
+<tr><td>contextMenus</td><td>Using context menu</td></tr>
+<tr><td>activeTab</td><td>Launching TextNotes and using context menu</td></tr>
+<tr><td>notifications</td><td>Showing TextNotes notifications</td></tr>
+</table>
 </div>
 <a class="gotop" href="#faq">Return to top</a><br>
 
@@ -325,20 +341,23 @@ software bug.
 <a class="gotop" href="#faq">Return to top</a><br>
 <hr>
 
-<h2 class="title" id="donate">Can I donate some money?</h2>
+<h2 class="title" id="donate">How can I contribute to the TextNotes project?</h2>
 <div class="answer">
-If you are satisfied with TextNotes, please make a donation to support the development.
+If you are satisfied with TextNotes, please make a donation to support it. Thank you!
 <br><br>
 
 <form class="donate" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
     <input type="hidden" name="cmd" value="_s-xclick" />
     <input type="hidden" name="hosted_button_id" value="2LJM4TXPYRNCQ" />
-    <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
+    <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit"
+    title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
 </form>
 <br>
 <img class="donate" src="QRCode.png">
 <br>
-Thank you!
+TextNotes project is looking for volunteer testers to check features and to hunt bugs. If you are interested in it
+<a target="_blank" href="mailto:gabor.shepherd.work@gmail.com"><i>send the developer an email</i></a>
+<span class="extlink">[↷]</span>
 <br>
 </div>
 <a class="gotop" href="#faq">Return to top</a><br>

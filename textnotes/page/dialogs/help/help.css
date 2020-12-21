@@ -75,6 +75,16 @@ table, tr, td, th
     margin-top : 5px;
 }
 
+.table_permissions
+{
+    font-family : monospace;
+    font-size : 12px;
+    margin-left : 15%;
+    margin-bottom : 1em;
+    margin-top : 1em;
+    width : 80%;
+}
+
 .table_hot_key
 {
     font-family : monospace;
@@ -114,14 +124,14 @@ table, tr, td, th
     width : 90%;
 }
 
-.table_hot_key td:nth-child(1), .table_storage td:nth-child(1), .table_undoredo td:nth-child(1), .table_hyperclick td:nth-child(1)
+.table_permissions td:nth-child(1), .table_hot_key td:nth-child(1), .table_storage td:nth-child(1), .table_undoredo td:nth-child(1), .table_hyperclick td:nth-child(1)
 {
     text-align: right;
     padding-right: 1em;
 
 }
 
-.table_hot_key td:nth-child(2), .table_storage td:nth-child(2), .table_undoredo td:nth-child(2), .table_hyperclick td:nth-child(2)
+.table_permissions td:nth-child(2), .table_hot_key td:nth-child(2), .table_storage td:nth-child(2), .table_undoredo td:nth-child(2), .table_hyperclick td:nth-child(2)
 {
     text-align: left;
     padding-left: 1em;
