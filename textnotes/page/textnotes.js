@@ -386,7 +386,7 @@ function setTextAreaEvents() {
 function selectUrlInTextAreaAtCursor() {
     log.debug("[START]")
 
-    let urlRe = /^((http|https|ftp|file):\/\/?)[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|\/?))/;
+    let urlRe = /^((http|https|ftp):\/\/?)[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|\/?))/;
     let wsRe = /\s/;
 
     let getIndexAtEndOfWord = (string, begin) => {
