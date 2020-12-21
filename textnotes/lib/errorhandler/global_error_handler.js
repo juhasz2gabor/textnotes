@@ -6,7 +6,7 @@ function errorHandler(msg, url, lineNo, columnNo, error) {
 
     var errorMessage = [
         '',
-        'Message : ' + msg.toLowerCase(),
+        'Message : ' + msg,
         'URL : ' + url,
         'Line : ' + lineNo,
         'Column : ' + columnNo,
@@ -25,5 +25,9 @@ function errorHandler(msg, url, lineNo, columnNo, error) {
     return true;
 };
 
+function errorHandler2(event) {
+    errorHandler(event.reason, "", "", "", event);
+}
+
 window.onerror = errorHandler;
-window.onunhandledrejection = errorHandler;
+window.onunhandledrejection = errorHandler2;
