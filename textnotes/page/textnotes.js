@@ -196,7 +196,7 @@ function newVersionMessage()
             + "- Hyperclick support\n"
             + "- Keyboard support\n"
             + "- Adding selected text to TextNotes\n"
-            + "\nAnd lots of more...\n"
+            + "\nAnd much more...\n"
 
     welcomeMessage +=
             "\nif you find a bug, please report it :\ngabor.shepherd.work@gmail.com"
