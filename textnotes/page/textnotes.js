@@ -188,14 +188,18 @@ function newVersionMessage()
 {
     let welcomeMessage =
               "Thanks for using TextNotes!\n\n"
-            + "New things in version 1.5 :\n";
+            + "New things in version 1.6 :\n";
+
+    welcomeMessage += ""
+            + "- Menu on toolbar\n"
+            + "- Help menu\n"
+            + "- Hyperclick support\n"
+            + "- Keyboard support\n"
+            + "- Adding selected text to TextNotes\n"
+            + "\nAnd lots of more...\n"
 
     welcomeMessage +=
-              "- Export data to text file\n"
-            + "- Minor bug fixes\n"
-
-    welcomeMessage +=
-            "\nif you find a bug, please report it to me :\ngabor.shepherd.work@gmail.com"
+            "\nif you find a bug, please report it :\ngabor.shepherd.work@gmail.com"
 
     let getHandler = (messageVersion) => {
         if (messageVersion != model._version) {
