@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
 
-    "name": "TextNotes-Beta",
+    "name": "TextNotes",
     "description": "TextNotes is a simple note extension with basic features.",
     "version": "1.6",
 
