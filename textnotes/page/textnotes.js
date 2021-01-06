@@ -590,11 +590,16 @@ function keyDownEventsOnTextArea(event) {
 
     if (!event.shiftKey)
     {
+        let textArea = document.getElementById("textArea");
         const tab = "\t";
-        const start = document.activeElement.selectionStart
-        const end = document.activeElement.selectionEnd;
 
-        document.getElementById("textArea").setRangeText(tab, start, end, "end");
+        if (textArea.selectionDirection === "forward") {
+            textArea.selectionStart = textArea.selectionEnd;
+        } else {
+            textArea.selectionEnd = textArea.selectionStart;
+        }
+
+        textArea.setRangeText(tab, textArea.selectionStart, textArea.selectionStart, "end");
         textAreaChanged();
 
         event.preventDefault();
