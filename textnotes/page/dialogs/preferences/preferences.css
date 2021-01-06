@@ -16,12 +16,12 @@ legend
 
 button
 {
+    white-space: nowrap;
     height: 30px;
+    width: 140px;
     padding-left: 8px;
     padding-right: 8px;
-    width: 130px;
     text-align: center;
-    margin-right: -3px;
     margin-bottom: 5px
 }
 
