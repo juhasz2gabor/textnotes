@@ -316,8 +316,8 @@ function setPageEvents() {
 
         if (msg.hasOwnProperty("type") && msg["type"] === "new-note"
             && msg.hasOwnProperty("target") && msg["target"] === log.getTabId()) {
-            if (msg.hasOwnProperty("text")) {
-                externalAddNoteAction(msg["text"]);
+            if (msg.hasOwnProperty("text") && msg.hasOwnProperty("new")) {
+                externalAddSelectedText(msg["text"], msg["new"]);
             } else {
                 log.warning("Message was invalid : " + JSON.stringify(msg))
             }
@@ -774,26 +774,6 @@ function addNoteAction() {
     log.debug("[EXIT]");
 }
 
-function externalAddNoteAction(text)
-{
-    log.debug("[START]");
-    log.trace("Text :" + text);
-
-    let leafId = model.addLeaf("ITEM", false, text);
-    model.moveLeafAfterLeaf2(leafId, "taskListTop");
-    updateTaskList()
-    setActiveItem(leafId);
-    model.save();
-
-    const message = "Add selected text as a new note";
-    const durationMs = 2000;
-    showNotification(message, durationMs);
-
-    log.debug("[EXIT]");
-
-    return leafId;
-}
-
 function addSeparatorAction() {
     log.debug("[START]");
 
@@ -852,6 +832,61 @@ function deleteNoteAction() {
     setActiveItem(model.getRoot()[itemIndex]);
 
     log.debug("[EXIT]");
+}
+
+function externalAddSelectedText(text, newNote)
+{
+    log.debug("[START]");
+    log.trace("Text :" + text);
+    log.trace("NewNote :" + newNote);
+
+    let returnId;
+    let topLeafId = model.getRoot()[0];
+    let topLeaf = model.getLeaf(topLeafId);
+
+
+    log.debug("topLeaf.type : " + topLeaf.type);
+    if (newNote || topLeaf.type !== "ITEM") {
+        log.debug("Adding to a new note");
+
+        let newLeafId = model.addLeaf("ITEM", false, text.trim() + "\n");
+        model.moveLeafAfterLeaf2(newLeafId, "taskListTop");
+        updateTaskList()
+        setActiveItem(newLeafId);
+        model.save();
+
+        const message = "Add selected text as a new note";
+        const durationMs = 2000;
+        showNotification(message, durationMs);
+
+        returnId = newLeafId;
+    } else {
+        log.debug("Adding into the top note");
+
+        let newText;
+
+        if (0 ===  topLeaf.text.trimEnd().length) {
+            newText = text.trim() + "\n";
+        } else {
+            newText = topLeaf.text.trimEnd() + "\n--------\n" + text.trim() + "\n";
+        }
+
+        model.setText(topLeafId, newText);
+
+        updateTaskList()
+        setActiveItem(topLeafId);
+        model.save();
+
+        const message = "Add selected text into the top note";
+        const durationMs = 2000;
+        showNotification(message, durationMs);
+
+        returnId = topLeafId;
+    }
+
+    log.debug("[EXIT]");
+
+    return returnId;
 }
 
 function textAreaChanged(event) {
@@ -1098,7 +1133,7 @@ function openHelpDialog() {
     let title = "Help";
     let source = "page/dialogs/help/help.html"
     let width = 770;
-    let height = 560;
+    let height = 580;
 
     dialog.show(title, source, width, height);
 }

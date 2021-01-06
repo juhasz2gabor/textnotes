@@ -39,7 +39,8 @@ function createContextMenu() {
                 break;
 
                 case itemAddText:
-                    addSelectedText(info.selectionText);
+                    const secondaryButton = 2;
+                    addSelectedText(info.selectionText, info.button !== secondaryButton);
                 break;
 
                 default:
@@ -107,7 +108,7 @@ async function startTextNotes(_, clickData) {
     log.debug("[EXIT]");
 }
 
-async function addSelectedText(text) {
+async function addSelectedText(text, newNote) {
     log.debug("[START]");
 
     if (textnotesTabIds.size === 0) {
@@ -118,12 +119,12 @@ async function addSelectedText(text) {
     }
 
     const timeoutSec = 5;
-    addSelectedText2(text, timeoutSec);
+    addSelectedText2(text, newNote, timeoutSec);
 
     log.debug("[EXIT]");
 }
 
-function addSelectedText2(text, timeoutSec) {
+function addSelectedText2(text, newNote, timeoutSec) {
     log.debug("[START]");
 
     if (timeoutSec === 0) {
@@ -133,10 +134,11 @@ function addSelectedText2(text, timeoutSec) {
 
     if (textnotesTabIds.size === 0) {
         log.debug("Waiting for TextNotes, timeout :" + timeoutSec);
-        setTimeout( ()=>{ addSelectedText2(text, timeoutSec-1); }, 1000);
+        setTimeout( ()=>{ addSelectedText2(text, newNote, timeoutSec-1); }, 1000);
     } else {
         log.debug("Selected Text :" + text);
-        let msg = { target: Array.from(textnotesTabIds)[0], type: "new-note", text: text };
+        log.debug("New note :" + newNote);
+        let msg = { target: Array.from(textnotesTabIds)[0], type: "new-note", text: text, new: newNote };
         log.debug(JSON.stringify(msg));
 
         try {

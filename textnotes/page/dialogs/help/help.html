@@ -17,22 +17,25 @@ href="https://juhasz2gabor.github.io/textnotes"><i>https://juhasz2gabor.github.i
 <h3><span class="number">3.</span><a href="#launch">How to launch TextNotes?</a></h3>
 <h3><span class="number">4.</span><a href="#keyboard">Is there keyboard support?</a></h3>
 <h3><span class="number">5.</span><a href="#hyperclick">How to use hyperclick?</a></h3>
-<h3><span class="number">6.</span><a href="#saveload">Can I save and load data?</a></h3>
-<h3><span class="number">7.</span><a href="#where">Where does TextNotes store data?</a></h3>
-<h3><span class="number">8.</span><a href="#reliable">Is TextNotes reliable?</a></h3>
-<h3><span class="number">9.</span><a href="#storepassword">Is it safe to store my passwords in TextNotes?</a><h3>
-<h3><span class="number">10.</span><a href="#maintain">Does anybody maintain the TextNotes WebExtension?</a></h3>
-<h3><span class="number">11.</span><a href="#sourcecode">Can I see the source code of TextNotes?</a></h3>
-<h3><span class="number">12.</span><a href="#feed">Can TextNotes load data files created by users?</a></h3>
-<h3><span class="number">13.</span><a href="#knownbugs">Are there bugs in TextNotes?</a></h3>
-<h3><span class="number">14.</span><a href="#newfeature">What to do if I need a new feature?</a></h3>
-<h3><span class="number">15.</span><a href="#newbug">What to do if I find a bug?</a></h3>
-<h3><span class="number">16.</span><a href="#donate">How can I contribute to the TextNotes project?</a></h3>
+<h3><span class="number">6.</span><a href="#selectedtext">How to create notes from webpages?</a></h3>
+<h3><span class="number">7.</span><a href="#saveload">Can I save and load data?</a></h3>
+<h3><span class="number">8.</span><a href="#where">Where does TextNotes store data?</a></h3>
+<h3><span class="number">9.</span><a href="#reliable">Is TextNotes reliable?</a></h3>
+<h3><span class="number">10.</span><a href="#storepassword">Is it safe to store my passwords in TextNotes?</a><h3>
+<h3><span class="number">11.</span><a href="#maintain">Does anybody maintain the TextNotes WebExtension?</a></h3>
+<h3><span class="number">12.</span><a href="#sourcecode">Can I see the source code of TextNotes?</a></h3>
+<h3><span class="number">13.</span><a href="#feed">Can TextNotes load data files created by users?</a></h3>
+<h3><span class="number">14.</span><a href="#knownbugs">Are there bugs in TextNotes?</a></h3>
+<h3><span class="number">15.</span><a href="#newfeature">What to do if I need a new feature?</a></h3>
+<h3><span class="number">16.</span><a href="#newbug">What to do if I find a bug?</a></h3>
+<h3><span class="number">17.</span><a href="#donate">How can I contribute to the TextNotes project?</a></h3>
 <h2>Troubleshooting</h2>
 <h3><span class="number">1.</span><a href="#fatal">TextNotes does not start or the toolbar icon has disappeared.</a></h3>
 <h3><span class="number">2.</span><a href="#removed">By mistake I selected all text in TextArea and everything
     disappeared after pressing a button.</a></h3>
 <br>
+
+<!-- Main features  -->
 <hr>
 <h2 class="title" id="main">What are the main features of TextNotes?</h2>
 <div class="answer">
@@ -46,12 +49,13 @@ TextNotes is a simple note extension with basic features:
     <li> Keyboard support
     <li> Hyperclick on URLs, supporting foreground and background tabs
     <li> Saving and loading data
-    <li> Adding any selected text on pages to TextNotes via context menu
+    <li> Creating notes from webpages
     <li> Synchronization among multiple instances
 </ul>
 </div>
 <a class="gotop" href="#faq">Return to top</a><br>
 
+<!-- Permissions  -->
 <hr>
 <h2 class="title" id="permissions">Which permissions does TextNotes need and why?</h2>
 <div class="answer">
@@ -66,6 +70,7 @@ TextNotes is a simple note extension with basic features:
 </div>
 <a class="gotop" href="#faq">Return to top</a><br>
 
+<!-- How to launch  -->
 <hr>
 <h2 class="title" id="launch">How to launch TextNotes?</h2>
 <div class="answer">
@@ -89,6 +94,7 @@ menu after text selection and there is no running TextNotes in any window.
 </div>
 <a class="gotop" href="#faq">Return to top</a><br>
 
+<!-- Keyboard support  -->
 <hr>
 <h2 class="title" id="keyboard">Is there keyboard support?</h2>
 <div class="answer">
@@ -112,6 +118,7 @@ menu after text selection and there is no running TextNotes in any window.
 </div>
 <a class="gotop" href="#faq">Return to top</a><br>
 
+<!-- Hyperclick  -->
 <hr>
 <h2 class="title" id="hyperclick">How to use hyperclick?</h2>
 <div class="answer">
@@ -133,9 +140,30 @@ Do not move the mouse after pressing <i>Ctrl+MouseDown</i>!<br>
 <br>
 <b>Supported protocol names</b> : <i>http, https, ftp</i>
 </div>
-
 <a class="gotop" href="#faq">Return to top</a><br>
 
+<!-- Selected text  -->
+<hr>
+<h2 class="title" id="selectedtext">How to create notes from webpages?</h2>
+<div class="answer">
+You can create notes from webpages into TextNotes via context menu. Texts can be added
+as new notes or can be added into the top note.<br><br>
+<b>Steps:</b>
+<ol>
+    <li>Select any text on a page
+    <li>Open context menu (<i>right click</i>)
+    <li>New menu item appeared : <i>Add Selected Text to TextNotes</i>
+    <ul>
+        <li><i>Click</i> on it → new note has been created containing selected text<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>OR</b>
+        <li><i>Right click</i> on it → selected text has been added into the top note.
+    </ul>
+    <li>Notification appeared about the action if it was successful.
+</ol>
+</div>
+<a class="gotop" href="#faq">Return to top</a><br>
+
+<!-- Save/Load data  -->
 <hr>
 <h2 class="title" id="saveload">Can I save and load data?</h2>
 <div class="answer">
@@ -152,6 +180,7 @@ Details : <a href="#feed">Can TextNotes load data files created by users?</a>
 </div>
 <a class="gotop" href="#faq">Return to top</a><br>
 
+<!-- Data storing  -->
 <hr>
 <h2 class="title" id="where">Where does TextNotes store the data?</h2>
 <div class="answer">
@@ -163,6 +192,7 @@ These data cannot directly be read by users.
 </div>
 <a class="gotop" href="#faq">Return to top</a><br>
 
+<!-- Relaibility  -->
 <hr>
 <h2 class="title" id="reliable">Is TextNotes reliable?</h2>
 <div class="answer">
@@ -211,6 +241,7 @@ After considering the importance of your data you can decide what is the best le
 </div>
 <a class="gotop" href="#faq">Return to top</a><br>
 
+<!-- Storing password  -->
 <hr>
 <h2 class="title" id="storepassword">Is it safe to store my passwords in TextNotes?</h2>
 <div class="answer">
@@ -221,6 +252,7 @@ TextNotes does not encrypt your notes and the storage area is not encrypted eith
 </div>
 <a class="gotop" href="#faq">Return to top</a><br>
 
+<!-- Maintaining  -->
 <hr>
 <h2 class="title" id="maintain">Does anybody maintain the TextNotes WebExtension?</h2>
 <div class="answer">
@@ -239,6 +271,7 @@ Take a look at a <a target="_blank" href="https://juhasz2gabor.github.io/textnot
 </div>
 <a class="gotop" href="#faq">Return to top</a><br>
 
+<!-- Source code  -->
 <hr>
 <h2 class="title" id="sourcecode">Can I see the source code of TextNotes?</h2>
 <div class="answer">
@@ -248,6 +281,7 @@ You can find it here : <a target="_blank" href="https://github.com/juhasz2gabor/
 </div>
 <a class="gotop" href="#faq">Return to top</a><br>
 
+<!-- Feeding TextNotes  -->
 <hr>
 <h2 class="title" id="feed">Can TextNotes load data files created by users?</h2>
 <div class="answer">
@@ -302,6 +336,7 @@ Note in trash<br>
 </div>
 <a class="gotop" href="#faq">Return to top</a><br>
 
+<!-- Known bugs  -->
 <hr>
 <h2 class="title" id="knownbugs">Are there bugs in TextNotes?</h2>
 <div class="answer">
@@ -327,8 +362,9 @@ developed which may contain your feature if it does not fit the current TextNote
 Please be patient. It is just a hobby project!
 </div>
 <a class="gotop" href="#faq">Return to top</a><br>
-<hr>
 
+<!-- Finding a bug  -->
+<hr>
 <h2 class="title" id="newbug">What to do if I found a bug?</h2>
 <div class="answer">
 If you found a bug, please <a target="_blank" href="mailto:gabor.shepherd.work@gmail.com"><i>send the developer an email</i></a>
@@ -339,8 +375,9 @@ The first release of TextNotes was in September 2017 and since then there has be
 software bug.
 </div>
 <a class="gotop" href="#faq">Return to top</a><br>
-<hr>
 
+<!-- Contributing TextNotes  -->
+<hr>
 <h2 class="title" id="donate">How can I contribute to the TextNotes project?</h2>
 <div class="answer">
 If you are satisfied with TextNotes, please make a donation to support it. Thank you!
@@ -363,6 +400,7 @@ TextNotes project is looking for volunteer testers to check features and to hunt
 <a class="gotop" href="#faq">Return to top</a><br>
 <hr>
 
+<!-- TextNotes crashes  -->
 <h2 class="title" id="fatal">TextNotes does not start or the toolbar icon has disappeared</h2>
 <div class="answer">
 If you have some basic computer skills, you can attempt to solve problems yourself.
@@ -416,6 +454,8 @@ And now go through the list and try to find your case.
 </div>
 <a class="gotop" href="#faq">Return to top</a><br>
 
+<!-- Text Disappeared -->
+<hr>
 <h2 class="title" id="removed">By mistake I selected all text in TextArea<br>and everything has disappeared after
 pressing a button.</h2>
 <div class="answer">
