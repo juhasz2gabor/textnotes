@@ -108,6 +108,13 @@ function startTextNotes() {
 function startTextNotes2() {
     newVersionMessage();
     log.info("TextNotes started");
+    document.getElementById('themeSwitch').addEventListener('change', function(event) {
+           if (event.target.checked) {
+                document.body.setAttribute('data-theme', 'dark')
+           } else {
+               document.body.removeAttribute('data-theme');
+           }
+    });
 }
 
 function registerPage() {

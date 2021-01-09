@@ -1,3 +1,13 @@
+:root
+{
+    --filter-dark : none;
+}
+
+body[data-theme="dark"]
+{
+    --filter-dark : invert(0.9) hue-rotate(225deg);
+}
+
 .basicContext,
 .basicContext * {
     box-sizing: border-box
@@ -9,7 +19,8 @@
     top: 0;
     left: 0;
     z-index: 1000;
-    -webkit-tap-highlight-color: transparent
+    -webkit-tap-highlight-color: transparent;
+    filter: var(--filter-dark);
 }
 .basicContext {
     position: absolute;
