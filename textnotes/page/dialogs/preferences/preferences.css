@@ -30,6 +30,13 @@ button::-moz-focus-inner
     border: 0;
 }
 
+input
+{
+    margin-left: 50px;
+    position: relative;
+    top : 2px;
+}
+
 .rightAlign
 {
     float: right;

@@ -9,6 +9,7 @@ var dialog = null;
 
 var activeTaskItem = null;
 var openTrashbin = null;
+var displayMode = null;
 var currentCursorPosition = null;
 var notificationTimerId = 0;
 
@@ -108,13 +109,6 @@ function startTextNotes() {
 function startTextNotes2() {
     newVersionMessage();
     log.info("TextNotes started");
-    document.getElementById('themeSwitch').addEventListener('change', function(event) {
-           if (event.target.checked) {
-                document.body.setAttribute('data-theme', 'dark')
-           } else {
-               document.body.removeAttribute('data-theme');
-           }
-    });
 }
 
 function registerPage() {
@@ -174,6 +168,7 @@ function loadUIState() {
 
     activeTaskItem = getUIState("activeTaskItem");
     openTrashbin = Boolean(getUIState("openTrashbin"));
+    displayMode = getUIState("displayMode");
 
     log.debug("[EXIT]");
 }
@@ -185,6 +180,7 @@ function update() {
     updateTaskList();
     setActiveItem(activeTaskItem);
     model.resetChanged();
+    setDisplayMode();
     setPageVisible();
     document.getElementById("taskList").focus();
 
@@ -230,6 +226,33 @@ function setPageVisible() {
     log.trace("[START]");
     document.querySelector("body").style.visibility = "visible";
     log.trace("[EXIT]");
+}
+
+function setDisplayMode()
+{
+    log.info("DisplayMode : " + displayMode);
+
+    switch(displayMode)
+    {
+        case "light" :
+            log.info("case::light");
+            document.body.removeAttribute('data-theme', 'dark');
+        break;
+
+        case "dark" :
+            log.info("case::dark");
+            document.body.setAttribute('data-theme', 'dark');
+        break;
+
+        default:
+            if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                log.info("default::dark");
+                document.body.setAttribute('data-theme', 'dark');
+            } else {
+                log.info("default::light");
+                document.body.removeAttribute('data-theme', 'dark');
+            }
+    }
 }
 
 function setPageEvents() {
@@ -1135,7 +1158,7 @@ function openPreferenceDialog() {
     let title = "Preferences";
     let source = "page/dialogs/preferences/preferences.html";
     let width = 650;
-    let height = 215;
+    let height = 270;
 
     model.save();
     dialog.show(title, source, width, height);
