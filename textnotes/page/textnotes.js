@@ -9,11 +9,13 @@ var dialog = null;
 
 var activeTaskItem = null;
 var openTrashbin = null;
+var displayMode = null;
 var currentCursorPosition = null;
 var notificationTimerId = 0;
 
 var disableTabInTextArea = false;
 var capslockonSimulation = false;
+var autoDarkModeSimulation = false;
 
 async function initTextNotes() {
     log = await Logger.create();
@@ -103,7 +105,7 @@ function startTextNotes() {
     update();
     registerPage();
     log.debug("[EXIT]");
-    }
+}
 
 function startTextNotes2() {
     newVersionMessage();
@@ -167,6 +169,7 @@ function loadUIState() {
 
     activeTaskItem = getUIState("activeTaskItem");
     openTrashbin = Boolean(getUIState("openTrashbin"));
+    displayMode = getUIState("displayMode");
 
     log.debug("[EXIT]");
 }
@@ -178,6 +181,7 @@ function update() {
     updateTaskList();
     setActiveItem(activeTaskItem);
     model.resetChanged();
+    setDisplayMode();
     setPageVisible();
     document.getElementById("taskList").focus();
 
@@ -223,6 +227,32 @@ function setPageVisible() {
     log.trace("[START]");
     document.querySelector("body").style.visibility = "visible";
     log.trace("[EXIT]");
+}
+
+function setDisplayMode() {
+    log.debug("DisplayMode : " + displayMode);
+
+    switch(displayMode)
+    {
+        case "light" :
+            log.debug("Selected mode : case::light");
+            document.body.removeAttribute('data-theme', 'dark');
+        break;
+
+        case "dark" :
+            log.debug("Selected mode : case::dark");
+            document.body.setAttribute('data-theme', 'dark');
+        break;
+
+        default:
+            if (window.matchMedia('(prefers-color-scheme: dark)').matches || autoDarkModeSimulation) {
+                log.debug("Selected mode : default::dark");
+                document.body.setAttribute('data-theme', 'dark');
+            } else {
+                log.debug("Selected mode : default::light");
+                document.body.removeAttribute('data-theme', 'dark');
+            }
+    }
 }
 
 function setPageEvents() {
@@ -1128,7 +1158,7 @@ function openPreferenceDialog() {
     let title = "Preferences";
     let source = "page/dialogs/preferences/preferences.html";
     let width = 650;
-    let height = 215;
+    let height = 270;
 
     model.save();
     dialog.show(title, source, width, height);
@@ -1138,7 +1168,7 @@ function openHelpDialog() {
     let title = "Help";
     let source = "page/dialogs/help/help.html"
     let width = 770;
-    let height = 580;
+    let height = 600;
 
     dialog.show(title, source, width, height);
 }

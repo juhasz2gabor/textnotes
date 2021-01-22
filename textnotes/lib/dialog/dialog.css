@@ -1,3 +1,13 @@
+:root
+{
+    --filter-dark : none;
+}
+
+body[data-theme="dark"]
+{
+    --filter-dark : invert(0.9) hue-rotate(180deg);
+}
+
 .dialog-container
 {
     visibility: hidden;
@@ -9,6 +19,7 @@
     background-color: rgba(0, 0, 0, 0.1);
     z-index: 100;
     user-select: none;
+    filter: var(--filter-dark);
 }
 
 .dialog-container.visible

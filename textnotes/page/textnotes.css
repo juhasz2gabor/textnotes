@@ -1,3 +1,13 @@
+:root
+{
+    --filter-dark : none;
+}
+
+body[data-theme="dark"]
+{
+    --filter-dark : invert(0.9) hue-rotate(180deg);
+}
+
 body
 {
     margin: 0;
@@ -71,6 +81,7 @@ span
     width: 100%;
     background:-moz-linear-gradient(#EDEFF6,#DEE2EF);
     padding-top: 4px;
+    filter: var(--filter-dark);
 }
 
 .dragBar
@@ -85,6 +96,7 @@ span
      background:-moz-linear-gradient(left, #FFFFFF, #B4B4B4);
      cursor: col-resize;
      border: 0px;
+     filter: var(--filter-dark);
 }
 
 .textArea
@@ -103,11 +115,13 @@ span
      border: 1px solid #B4B4B4;
      font-family : Sans-Serif;
      font-size : 13px;
+     filter: var(--filter-dark);
 }
 
 
 .taskList
 {
+    background: white;
     position: absolute;
     width: 100%;
     top: 33px;
@@ -120,6 +134,7 @@ span
     overflow-y: auto;
     text-overflow: clip;
     white-space: nowrap;
+    filter: var(--filter-dark);
 }
 
 .taskListTop
@@ -136,6 +151,7 @@ span
     margin: 0px;
     outline: none;
     cursor: default;
+    filter: var(--filter-dark);
 }
 
 .taskItem

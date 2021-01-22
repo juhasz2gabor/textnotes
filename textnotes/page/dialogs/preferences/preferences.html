@@ -15,12 +15,18 @@
 <body id="preferencesBody">
     <fieldset>
         <legend>Local Storage</legend>
+        <button id="importButton">Load</button><br>
+        <input  id="fileSelector" class="hidden" type="file" accept=".tn,.txt">
         <button id="exportButtonTn">Save</button>
         <button id="exportButtonTxt">Save As Text</button>
         <button id="advancedButton" class="rightAlign transparent">&nbsp;</button><br>
-        <button id="importButton">Load</button><br>
-        <input  id="fileSelector" class="hidden" type="file" accept=".tn,.txt">
         <button id="deleteButton" class="rightAlign">Delete All</button>
+    </fieldset>
+    <fieldset>
+        <legend>Display Mode</legend>
+        <input type="radio" id="modeLight" value="light" name="displayMode">&nbsp;<label for="modeLight">Light</label>
+        <input type="radio" id="modeDark" value="dark" name="displayMode">&nbsp;<label for="modeDark">Dark</label>
+        <input type="radio" id="modeAuto" value="auto" name="displayMode">&nbsp;<label for="modeAuto">Auto</label>
     </fieldset>
     <fieldset id="devsettings" class="hidden">
         <legend>Developer Settings</legend>

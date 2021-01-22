@@ -26,10 +26,104 @@ async function init() {
     log.trace("Events has been registered succesfuly.");
 
     await initLogLevelSelect();
-
-    log.info("TextNotes Preferences page started");
+    loadModel(startPage);
 
     log.debug("[EXIT]");
+}
+
+function loadModel(doneHandler) {
+    log.debug("[START]");
+
+    let errorHandler = function(errorMessage) {
+        log.debug("[START]");
+
+        model.reset();
+
+        const message1 = "\n\nOops, something went wrong. Please restart your browser!\n ";
+        const message2 = "\nThis page will be closed!\n "
+
+        alert("Error :" + errorMessage + message1 + message2);
+
+        window.parent.close();
+
+        window.setTimeout(()=> { alert("TextNotes can not be closed, please restart your browser!") }, 1000);
+
+        log.debug("[EXIT]");
+    }
+
+    model.load(doneHandler, errorHandler);
+
+    log.debug("[EXIT]");
+}
+
+function startPage() {
+    setDisplayMode();
+    setDisplayModeEvents();
+
+    log.info("TextNotes Preferences page started");
+}
+
+function setDisplayMode() {
+    var displayMode = getUIState("displayMode");
+
+    log.info("DisplayMode :" + displayMode);
+
+    switch(displayMode)
+    {
+        case "light":
+            document.getElementById("modeLight").checked = true;
+        break;
+
+        case "dark":
+            document.getElementById("modeDark").checked = true;
+        break;
+
+        default :
+            document.getElementById("modeAuto").checked = true;
+    }
+}
+
+function setDisplayModeEvents() {
+    let onDisplayModeChanged = (event)=>{
+        setUIState("displayMode", event.target.value);
+        model.save(() => { window.parent.location.reload(); });
+    }
+
+    document.getElementById("modeLight").addEventListener("change", onDisplayModeChanged);
+    document.getElementById("modeDark").addEventListener("change", onDisplayModeChanged);
+    document.getElementById("modeAuto").addEventListener("change", onDisplayModeChanged);
+}
+
+function setUIState(name, value) {
+    log.debug("[START]");
+
+    log.trace("uistate[" + name + "] =" + value);
+
+    let uistate = model.getUIState();
+
+    uistate[name] = value;
+
+    model.setUIState(uistate);
+
+    log.debug("[EXIT]");
+}
+
+function getUIState(name) {
+    log.debug("[START]");
+
+    let uistate = model.getUIState();
+    let value = "";
+
+    if ( uistate.hasOwnProperty(name) ) {
+        value = uistate[name];
+        log.trace("uistate[" + name + "] =" + value);
+    } else {
+        log.debug("No property in UIState :" + name);
+    }
+
+    log.debug("[EXIT]");
+
+    return value;
 }
 
 function advancedAction() {
