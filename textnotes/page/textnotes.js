@@ -206,6 +206,7 @@ function newVersionMessage()
             "\nif you find a bug, please report it :\ngabor.shepherd.work@gmail.com"
 
     let getHandler = (messageVersion) => {
+        log.info("messageVersion :" + messageVersion + ", model._version :" + model._version);
         if (messageVersion != model._version) {
             alert(welcomeMessage);
             let prefix = "In newVersionMessage::getHandler() : "
