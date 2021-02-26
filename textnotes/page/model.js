@@ -31,7 +31,7 @@ class Model {
     _setState(data) {
         log.trace("[START]");
 
-        this._version = data.version;
+        this._version = browser.runtime.getManifest().version;
         this._root = data.root;
         this._leaves = data.leaves;
         this._uistate = data.uistate;

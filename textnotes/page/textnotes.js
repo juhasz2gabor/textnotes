@@ -200,7 +200,10 @@ function newVersionMessage()
             + "- Minor bug fixes\n"
 
     welcomeMessage +=
-            "\nif you find a bug, please report it :\ngabor.shepherd.work@gmail.com"
+            "\nif you find a bug, please report it : gabor.shepherd.work@gmail.com\n"
+
+    welcomeMessage += "\nPlease always update to the latest version of TextNotes.\n"
+                      + "The old versions may not work properly with the latest Firefox!\n"
 
     let getHandler = (messageVersion) => {
         log.info("messageVersion :" + messageVersion + ", model._version :" + model._version);
@@ -1156,7 +1159,7 @@ function openPreferenceDialog() {
     let title = "Preferences";
     let source = "page/dialogs/preferences/preferences.html";
     let width = 650;
-    let height = 270;
+    let height = 280;
 
     model.save();
     dialog.show(title, source, width, height);
