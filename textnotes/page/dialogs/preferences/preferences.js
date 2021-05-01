@@ -127,7 +127,9 @@ function getUIState(name) {
 }
 
 function advancedAction() {
-    document.getElementById("devsettings").classList.remove("hidden");
+    if (event.ctrlKey) {
+        document.getElementById("devsettings").classList.remove("hidden");
+    }
 }
 
 async function initLogLevelSelect() {
