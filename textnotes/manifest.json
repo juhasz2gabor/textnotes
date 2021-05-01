@@ -18,7 +18,15 @@
         "scripts": ["lib/logger/log.js", "background/background.js"]
     },
 
-    "permissions": ["storage", "unlimitedStorage", "contextMenus", "activeTab", "notifications"],
+    "permissions": [
+        "storage",
+        "unlimitedStorage",
+        "contextMenus",
+        "activeTab",
+        "notifications",
+        "identity",
+        "*://www.googleapis.com/*"
+    ],
 
     "browser_action": {
         "browser_style" : true,

@@ -80,7 +80,7 @@ span
     height: 30px;
     width: 100%;
     background:-moz-linear-gradient(#EDEFF6,#DEE2EF);
-    padding-top: 4px;
+    padding-top: 1px;
     filter: var(--filter-dark);
 }
 

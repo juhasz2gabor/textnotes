@@ -189,6 +189,9 @@ function onMessage(message) {
             default :
                 log.warning("Unknown command :" +  message.command);
         }
+    } else if (message.hasOwnProperty("type") && message["type"] === "google_oauth2") {
+        log.info("Message arrived : google_oauth2");
+        doOAuth2();
     } else {
         log.warning("Unknown message!")
     }
@@ -247,6 +250,116 @@ async function initBackground() {
 
     log.info("Background has been initialized succesfully, version :" + browser.runtime.getManifest().version);
     log.debug("[EXIT]");
+}
+
+const clientID = "350613416742-2afpkvegna66mknm83lr8h9ejfdpsor8.apps.googleusercontent.com";
+
+function doOAuth2() {
+    const redirectURL = "http://127.0.0.1/mozoauth2/89991568f53933d0e093c132d15a050bd7513b79"
+    const scope = "https://www.googleapis.com/auth/drive.file"
+    let authURL = "https://accounts.google.com/o/oauth2/v2/auth";
+    authURL += `?client_id=${clientID}`;
+    authURL += `&response_type=token`;
+    authURL += `&redirect_uri=${encodeURIComponent(redirectURL)}`;
+    authURL += `&scope=${encodeURIComponent(scope)}`;
+
+    log.info("authURL : " + authURL);
+
+    try {
+        browser.identity.launchWebAuthFlow({ interactive: true, url: authURL })
+            .then(doOAuth2_2, (e) => { log.error("launchWebAuthFlow : " + e)});
+    } catch(e) {
+        log.error("exception : launchWebAuthFlow : " + e);
+    }
+}
+
+function doOAuth2_2(redirectUri) {
+    log.info("Redirect URI : " + redirectUri);
+
+      let m = redirectUri.match(/[#?](.*)/);
+      if (!m || m.length < 1) {
+          log.error("redirect URI format is not valid!");
+      } else {
+          let access_token = new URLSearchParams(m[1].split("#")[0]).get("access_token");
+          log.info("access_token : " + access_token);
+          if (!access_token) {
+              log.error("'access_token' parameter does not exist!")
+          } else {
+              const validationURL = 'https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=' + access_token;
+              const validationRequest = new Request(validationURL, { method: "GET" });
+
+              try {
+                  const callback = (response) => {
+                      if (!response.ok) {
+                          log.error("Validation was not successful : " + response.status + " " + response.statusText);
+                      } else {
+                          const jsonCallback = (json) => {
+                              log.info("Response : " + JSON.stringify(json));
+                              if (json.aud && json.aud === clientID) {
+                                  doOAuth2_3(access_token);
+                              } else {
+                                  log.error("Validation was not successful");
+                              }
+                          };
+
+                          response.json().then(jsonCallback);
+                      }
+                  };
+
+                  fetch(validationRequest).then(callback);
+
+              } catch(e) {
+                  log.error("Some error occured while validating token :" + e);
+              }
+          }
+
+      }
+}
+
+function doOAuth2_3(access_token) {
+    log.info("Validation was successful, access_token : " + access_token);
+
+    try {
+        let message = { type: "google_oauth2_resp", token: access_token };
+        browser.runtime.sendMessage(message).then(
+            () => { },
+            (error) => { log.error("Error while sending google_oauth2_resp : " + error); });
+    } catch(e) {
+        log.debug("Exception occured!");
+        log.error("Error while sending google_oauth2_resp : " + e);
+    }
+}
+
+
+
+async function showResponse(response) {
+    log.info("Response : " + response.status + " " + response.statusText + " : " + await response.text());
+}
+
+async function XXXdoOAuth2_3(access_token) {
+    log.info("Validation was successful, access_token : " + access_token);
+
+    let response;
+
+    const headers = new Headers();
+    headers.append('Authorization', 'Bearer ' + access_token);
+
+    try {
+        // Create a file
+        const data = '{ "text" : "Hello World!" }'
+        h1 = headers.clone();
+        h1.append("Content-Type", "text/plain");
+
+        response = await fetch(new Request(DRIVE_API + "/files?uploadType=media",
+                                           { method:"POST", headers:headers, body:data }));
+        showResponse(response);
+
+        // List files
+        response = await fetch(new Request(DRIVE_API + "/files", { method: "GET", headers : headers }));
+        showResponse(response);
+    } catch(e) {
+        log.error("Some error occured while using driver API : " + e);
+    }
 }
 
 window.onload = initBackground;

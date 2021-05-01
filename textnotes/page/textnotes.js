@@ -110,6 +110,10 @@ function startTextNotes() {
 function startTextNotes2() {
     newVersionMessage();
     log.info("TextNotes started");
+
+    if (model.getRoot().length <= 1) {
+        addNoteAction();
+    }
 }
 
 function registerPage() {
@@ -259,6 +263,13 @@ function setDisplayMode() {
 function setPageEvents() {
     log.trace("[START]");
 
+    document.getElementById("sign_in").addEventListener("click", signIn);
+    document.getElementById("list_file").addEventListener("click", listFile);
+    document.getElementById("create_dir").addEventListener("click", createDir);
+    document.getElementById("save_file").addEventListener("click", saveFile);
+    document.getElementById("load_file").addEventListener("click", loadFile);
+    document.getElementById("delete_file").addEventListener("click", deleteFile);
+
     let message = "This page is asking you to confirm that you want to leave - data you have entered may not be saved."
     let onBeforeUnload = function(event) {
         log.debug("TextNotes is stopping");
@@ -352,6 +363,11 @@ function setPageEvents() {
             } else {
                 log.warning("Message was invalid : " + JSON.stringify(msg))
             }
+        } else if (msg.hasOwnProperty("type") && msg["type"] === "google_oauth2_resp") {
+            log.info("Message arrived : google_oauth2_resp");
+            log.info("oauth2 access token :" + msg["token"]);
+            oauth2_token = msg["token"];
+            l("oauth2 token :\n" + oauth2_token);
         } else {
             log.trace("Message has arrived but the target is other tab or message type was invalid!");
         }
@@ -1223,6 +1239,155 @@ async function showNotification(message, durationMs) {
     log.trace("Added new timer, notificationTimerId :" + notificationTimerId);
 
     log.trace("[EXIT]");
+}
+
+function l(text) {
+    const pad = (n, length) => { return (String("0").repeat(length) + n).slice(-length); }
+
+    let topLeafId = model.getRoot()[0];
+    let topLeaf = model.getLeaf(topLeafId);
+
+    let now = new Date();
+    let time = pad(now.getHours(), 2) + ":" + pad(now.getMinutes(), 2) + ":" + pad(now.getSeconds(), 2) + "." +
+               pad(now.getMilliseconds(), 3);
+
+    const newText = "-------- " + time + "\n" + text.trimEnd() + "\n\n" + topLeaf.text.trim() + "\n";
+
+    model.setText(topLeafId, newText);
+
+    updateTaskList()
+    setActiveItem(topLeafId);
+    model.save();
+}
+
+async function showResponse(response) {
+    const status = response.status;
+    const statusText = response.statusText;
+    const responseText = await response.text();
+
+    l("Response : " + status + " " + statusText + " : " + responseText);
+
+    return { status:status, statusText:statusText, responseText:responseText};
+}
+
+function signIn() {
+    let message = { type: "google_oauth2" };
+    browser.runtime.sendMessage(message);
+}
+
+var oauth2_token = "";
+var folderId = "";
+const TIMEOUT_MS = 1000;
+
+const DRIVE_API = "https://www.googleapis.com/drive/v3";
+const DRIVE_UPLOAD_API = "https://www.googleapis.com/upload/drive/v3";
+
+async function fetchWithTimeout(resource, options = Object()) {
+  const controller = new AbortController();
+  const id = setTimeout(() => controller.abort(), TIMEOUT_MS);
+
+  options.signal = controller.signal;
+  const response = await fetch(resource, options);
+
+  clearTimeout(id);
+
+  return response;
+}
+
+async function createDir() {
+    const getFolderList = async () => {
+        let headers = new Headers();
+        headers.append('Authorization', 'Bearer ' + oauth2_token);
+
+        const query = "?q=mimeType%3D%27application%2Fvnd.google-apps.folder%27";
+        let response = await fetch(new Request(DRIVE_API + "/files" + query, { method: "GET", headers : headers }));
+        let resp = await showResponse(response);
+
+        return JSON.parse(resp.responseText).files;
+    };
+
+    const createFolder = async () => {
+        let headers = new Headers();
+        headers.append('Authorization', 'Bearer ' + oauth2_token);
+        headers.append('Accept', 'application/json');
+        headers.append('Content-Type', 'application/json');
+
+        let data = '{ "name": ".TextNotes", "mimeType" : "application/vnd.google-apps.folder" }';
+
+        let response = await fetch(new Request(DRIVE_API + "/files", { method:"POST", headers:headers, body:data }));
+        await showResponse(response);
+    };
+
+    let folders = await getFolderList();
+
+    if  (0 === folders.length) {
+        l("There is no existing folder");
+        await createFolder();
+        folders = await getFolderList();
+    } else {
+        l("There is an existing folder");
+    }
+
+    folderId = folders[0].id;
+    l("FolderId : " + folderId);
+}
+
+async function listFile() {
+    let headers = new Headers();
+    headers.append('Authorization', 'Bearer ' + oauth2_token);
+
+    const query = "?q='" + folderId + "' in parents";
+
+    let response = await fetchWithTimeout(new Request(DRIVE_API + "/files" + query,
+                                          { method: "GET", headers : headers }));
+    showResponse(response);
+}
+
+async function saveFile() {
+    let data = model.exportDataAsText();
+    let headers = new Headers();
+    headers.append('Authorization', 'Bearer ' + oauth2_token);
+    headers.append('Content-Type', "text/plain")
+    headers.append('Content-Length', data.length)
+
+    let response = await fetch(new Request(DRIVE_UPLOAD_API + "/files?uploadType=media",
+                              { method:"POST", headers:headers, body:data }));
+    let resp = await showResponse(response);
+    const id = JSON.parse(resp.responseText).id;
+
+    headers = new Headers();
+    headers.append('Authorization', 'Bearer ' + oauth2_token);
+    headers.append('Accept', 'application/json');
+    headers.append('Content-Type', 'application/json');
+
+    data = '{"contentRestrictions":[{"readOnly":true}],"description":"TextNotes", "name":"' + new Date().getTime() +
+           '" }';
+
+    let query = "/files/" + id + "?addParents=" + folderId
+    response = await fetch(new Request(DRIVE_API + query, { method:"PATCH", headers:headers, body:data }));
+    showResponse(response);
+}
+
+async function loadFile() {
+    const fileId = prompt("What is the fileId?");
+
+    let headers = new Headers();
+    headers.append('Authorization', 'Bearer ' + oauth2_token);
+
+    const query = "/files/" + fileId + "?alt=media"
+    let response = await fetch(new Request(DRIVE_API + query, { method: "GET", headers : headers }));
+    await showResponse(response);
+}
+
+async function deleteFile() {
+    const fileId = prompt("What is the fileId?");
+
+    let headers = new Headers();
+    headers.append('Authorization', 'Bearer ' + oauth2_token);
+
+    const query = "/files/" + fileId;
+    let response = await fetch(new Request(DRIVE_API + query, { method: "DELETE", headers : headers }));
+    await showResponse(response);
 }
 
 window.onload = initTextNotes;
