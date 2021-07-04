@@ -3,6 +3,7 @@
 var log = null;
 var io = null;
 var model = null;
+var gdrive = null;
 
 async function init() {
     log = await Logger.create(false, "d");
@@ -13,6 +14,9 @@ async function init() {
     io = IO.create(log.getId());
     log.trace("IO object has been created successfully.")
 
+    gdrive = GDrive.create();
+    log.trace("GDrive object has been created successfully.")
+
     model = Model.create();
     log.trace("Model object has been created successfully.")
 
@@ -22,7 +26,10 @@ async function init() {
     document.getElementById("fileSelector").addEventListener("change", importAction2, false);
     document.getElementById("deleteButton").addEventListener("click", deleteAction);
     document.getElementById("advancedButton").addEventListener("click", advancedAction);
+    document.getElementById("gdriveSignIn").addEventListener("click", gdriveSignInAction);
+
     document.getElementById("logLevel").addEventListener("change", logLevelSelectChanged);
+
     log.trace("Events has been registered succesfuly.");
 
     await initLogLevelSelect();
@@ -348,5 +355,80 @@ function deleteAction() {
 
     log.debug("[EXIT]");
 }
+
+function showLoader(){
+    document.getElementById("mainDiv").classList.add("blur_effect");
+    document.getElementById("loader").style.display = "flex";
+}
+
+function hideLoader() {
+    document.getElementById("mainDiv").classList.remove("blur_effect");
+    document.getElementById("loader").style.display = "none";
+}
+
+function gdriveSetState() {
+    log.debug("[START]");
+
+    if (! gdrive.isEmpty()) {
+        alert("IF");
+        return;
+
+    } else {
+        document.getElementById("gdriveSignIn").disabled = false;
+        document.getElementById("gdriveSelect").disabled = true;
+        document.getElementById("gdriveLoad").disabled = true;
+        document.getElementById("gdriveSave").disabled = true;
+        document.getElementById("gdriveSaveAsText").disabled = true;
+        document.getElementById("gdriveDeleteAll").disabled = true;
+        document.getElementById("gdriveDelete").disabled = true;
+
+        let select = document.getElementById("gdriveSelect");
+        const length = select.options.length;
+        for (let index = 0; index < (length - 1); index++) {
+            select.options.remove(1);
+        }
+    }
+
+    log.debug("[EXIT]");
+}
+
+function showErrorAndReset(source, message) {
+    log.debug("[START]");
+
+    gdrive.reset();
+    gdriveSetState();
+    hideLoader();
+
+    alert("Some error occured while " + source + " : \n" + message);
+
+    log.debug("[EXIT]");
+}
+
+function gdriveSignInAction() {
+    log.debug("[START]");
+
+    showLoader();
+    gdrive.reset();
+    gdriveSetState();
+
+    let msg = { type: "google_oauth2" };
+
+    try {
+        browser.runtime.sendMessage(msg).then(
+            () => { log.debug("Sending 'google_oauth2' command was successful.")},
+            (error) => {
+                log.error("Error while sending 'google_oauth2' command : " + error);
+                showErrorAndReset("signing in google", error);
+            });
+    } catch(e) {
+        log.debug("Exception occured!");
+        log.error("Error while sending 'google_oauth2' command : " + e);
+        showErrorAndReset("signing in google", error);
+    }
+
+    log.debug("[EXIT]");
+}
+
+
 
 window.onload = init;

@@ -1,6 +1,7 @@
 "use strict";
 
 let log = null;
+let gdrive = null;
 let textnotesTabIds = null;
 let textNotesURL = "";
 
@@ -189,6 +190,8 @@ function onMessage(message) {
             default :
                 log.warning("Unknown command :" +  message.command);
         }
+    } else if (message.hasOwnProperty("type") && message["type"] === "google_oauth2") {
+        doOAuth2();
     } else {
         log.warning("Unknown message!")
     }
@@ -229,9 +232,23 @@ function setContextMenuItem(info)
     log.debug("[EXIT]");
 }
 
+function doOAuth2() {
+    log.debug("[START]");
+
+    const callback = () => { log.debug("Done"); };
+    const callbackError = (e) => { log.debug("Error :" + e) };
+
+    gdrive.doOAuth2(callback, callbackError);
+
+    log.debug("[EXIT]");
+}
+
 async function initBackground() {
     log = await Logger.create(true);
     log.debug("[START]");
+
+    gdrive = GDrive.create();
+    log.debug("GDrive object has been created successfully")
 
     textnotesTabIds = new Set();
     textNotesURL = browser.extension.getURL("page/textnotes.html");
