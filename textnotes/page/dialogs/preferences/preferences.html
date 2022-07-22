@@ -8,29 +8,44 @@
         <script type="text/javascript" src="lib/pako/pako.js"></script>
         <script type="text/javascript" src="lib/logger/log.js"></script>
         <script type="text/javascript" src="page/io.js"></script>
+        <script type="text/javascript" src="page/gdrive.js"></script>
         <script type="text/javascript" src="page/model.js"></script>
         <script type="text/javascript" src="page/dialogs/preferences/preferences.js"></script>
         <link rel="stylesheet" type="text/css" href="page/dialogs/preferences/preferences.css">
     </head>
 <body id="preferencesBody">
-    <fieldset>
-        <legend>Local Storage</legend>
-        <button id="importButton">Load</button><br>
-        <input  id="fileSelector" class="hidden" type="file" accept=".tn,.txt">
-        <button id="exportButtonTn">Save</button>
-        <button id="exportButtonTxt">Save As Text</button>
-        <button id="advancedButton" class="rightAlign transparent">&nbsp;</button><br>
-        <button id="deleteButton" class="rightAlign">Delete All</button>
-    </fieldset>
-    <fieldset>
-        <legend>Display Mode</legend>
-        <input type="radio" id="modeLight" value="light" name="displayMode">&nbsp;<label for="modeLight">Light</label>
-        <input type="radio" id="modeDark" value="dark" name="displayMode">&nbsp;<label for="modeDark">Dark</label>
-        <input type="radio" id="modeAuto" value="auto" name="displayMode">&nbsp;<label for="modeAuto">Auto</label>
-    </fieldset>
-    <fieldset id="devsettings" class="hidden">
-        <legend>Developer Settings</legend>
-        Log Level : <select id="logLevel"></select>
-    </fieldset>
+    <div id="mainDiv">
+        <fieldset>
+            <legend>Local Storage</legend>
+            <button id="importButton" title="Load notes from local disk">Load</button><br>
+            <input  id="fileSelector" class="hidden" type="file" accept=".tn,.txt">
+            <button id="exportButtonTn" title="Save zipped notes to local disk" >Save</button>
+            <button id="exportButtonTxt" title="Save notes to local disk as text">Save As Text</button>
+            <button id="advancedButton" class="rightAlign transparent">&nbsp;</button><br>
+            <button id="deleteButton" class="rightAlign" title="Delete all notes from TextNotes">Delete All Notes</button>
+        </fieldset>
+        <fieldset>
+            <legend>Google Drive Storage</legend>
+            <button id="gdriveSignIn" title="Sign in to Google">Sign in</button>
+            <select id="gdriveSelect" class="rightAlign" disabled>
+                <option>Select a file to open or to delete</option>
+            </select><br>
+            <button id="gdriveLoad" disabled title="Load notes from Google Drive">Load</button><br>
+            <button id="gdriveSave" disabled title="Save zipped notes to Google Drive">Save</button>
+            <button id="gdriveSaveAsText" disabled title="Save notes to Google Drive as text">Save As Text</button><br>
+            <button id="gdriveDelete" title="Delete a file from Google Drive" disabled class="rightAlign">Delete</button>
+        </fieldset>
+        <fieldset>
+            <legend>Display Mode</legend>
+            <input type="radio" id="modeLight" value="light" name="displayMode">&nbsp;<label for="modeLight">Light</label>
+            <input type="radio" id="modeDark" value="dark" name="displayMode">&nbsp;<label for="modeDark">Dark</label>
+            <input type="radio" id="modeAuto" value="auto" name="displayMode">&nbsp;<label for="modeAuto">Auto</label>
+        </fieldset>
+        <fieldset id="devsettings" class="hidden">
+            <legend>Developer Settings</legend>
+            Log Level : <select id="logLevel"></select>
+        </fieldset>
+    </div>
+    <div id="loader" class="loader_container"><div class="loader"></div></div>
 </body>
 </html>

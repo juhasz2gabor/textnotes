@@ -3,6 +3,7 @@
 var log = null;
 var io = null;
 var model = null;
+var gdrive = null;
 
 async function init() {
     log = await Logger.create(false, "d");
@@ -13,22 +14,37 @@ async function init() {
     io = IO.create(log.getId());
     log.trace("IO object has been created successfully.")
 
+    gdrive = GDrive.create();
+    log.trace("GDrive object has been created successfully.")
+
     model = Model.create();
     log.trace("Model object has been created successfully.")
 
-    document.getElementById("exportButtonTn").addEventListener("click", ()=>exportAction("tn"));
-    document.getElementById("exportButtonTxt").addEventListener("click", ()=>exportAction("txt"));
-    document.getElementById("importButton").addEventListener("click", importAction);
-    document.getElementById("fileSelector").addEventListener("change", importAction2, false);
-    document.getElementById("deleteButton").addEventListener("click", deleteAction);
-    document.getElementById("advancedButton").addEventListener("click", advancedAction);
-    document.getElementById("logLevel").addEventListener("change", logLevelSelectChanged);
-    log.trace("Events has been registered succesfuly.");
+    setEvents();
 
     await initLogLevelSelect();
     loadModel(startPage);
 
     log.debug("[EXIT]");
+}
+
+function setEvents() {
+    document.getElementById("exportButtonTn").addEventListener("click", ()=>exportAction("tn", exportAction2));
+    document.getElementById("exportButtonTxt").addEventListener("click", ()=>exportAction("txt", exportAction2));
+    document.getElementById("importButton").addEventListener("click", importAction);
+    document.getElementById("fileSelector").addEventListener("change", importAction2, false);
+    document.getElementById("deleteButton").addEventListener("click", deleteAction);
+    document.getElementById("advancedButton").addEventListener("click", advancedAction);
+    document.getElementById("gdriveSignIn").addEventListener("click", gdriveSignInAction);
+    document.getElementById("gdriveSelect").addEventListener("change", gdriveSetButtons);
+    document.getElementById("gdriveSave").addEventListener("click", ()=>exportAction("tn", gdriveSaveAction));
+    document.getElementById("gdriveSaveAsText").addEventListener("click", ()=>exportAction("txt", gdriveSaveAction));
+    document.getElementById("gdriveLoad").addEventListener("click", gdriveLoadAction); //check error messages
+    document.getElementById("gdriveDelete").addEventListener("click", gdriveDeleteAction); //check error messages
+
+    document.getElementById("logLevel").addEventListener("change", logLevelSelectChanged);
+
+    log.trace("Events has been registered succesfuly.");
 }
 
 function loadModel(doneHandler) {
@@ -168,11 +184,9 @@ async function logLevelSelectChanged() {
     log.debug("[EXIT]");
 }
 
-function exportAction(type) {
+function exportAction(type, doneHandler) {
     log.debug("[START]")
     log.debug("Type :" + type);
-
-    let doneHandler = exportAction2;
 
     let errorHandler = function(message) {
         log.error("Message :" + message);
@@ -347,6 +361,269 @@ function deleteAction() {
     }
 
     log.debug("[EXIT]");
+}
+
+function showLoader(){
+    document.getElementById("mainDiv").classList.add("blur_effect");
+    document.getElementById("loader").style.display = "flex";
+}
+
+function hideLoader() {
+    document.getElementById("mainDiv").classList.remove("blur_effect");
+    document.getElementById("loader").style.display = "none";
+}
+
+function gdriveSetState() {
+    log.debug("[START]");
+
+    let select = document.getElementById("gdriveSelect");
+
+    const resetSelect = () => {
+        select.length = 0;
+        let option = document.createElement("option");
+        option.text = "Select a file to open or to delete";
+        option.value = "titleOption";
+        option.selected = true;
+        option.disabled = true;
+        option.hidden = true;
+        select.add(option);
+    }
+
+    resetSelect();
+
+    if (gdrive.isOAuth2Ready()) {
+        log.debug("OAuth2 is ready");
+
+        const fileList = gdrive.getFileList();
+        const fileListKeys = Object.keys(fileList);
+        for (const id of fileListKeys) {
+            let option = document.createElement("option");
+            option.text = fileList[id].name;
+            option.value = id;
+            option.title = new Date(fileList[id].modifiedTime).toLocaleString(undefined, { dateStyle : "medium", timeStyle : "short"});
+            log.debug("id :" + id + ", name :" + option.text + ", modifiedTime :" + option.title);
+
+            select.add(option);
+        }
+
+        document.getElementById("gdriveSignIn").disabled = true;
+        select.disabled = (0 === fileListKeys.length);
+        document.getElementById("gdriveLoad").disabled = true;
+        document.getElementById("gdriveSave").disabled = false;
+        document.getElementById("gdriveSaveAsText").disabled = false;
+        document.getElementById("gdriveDelete").disabled = true;
+    } else {
+        log.debug("No OAuth2");
+        document.getElementById("gdriveSignIn").disabled = false;
+        select.disabled = true;
+        document.getElementById("gdriveLoad").disabled = true;
+        document.getElementById("gdriveSave").disabled = true;
+        document.getElementById("gdriveSaveAsText").disabled = true;
+        document.getElementById("gdriveDelete").disabled = true;
+    }
+
+    gdriveSetButtons();
+
+    log.debug("[EXIT]");
+}
+
+function gdriveSetButtons() {
+    log.debug("[START]");
+
+    let select = document.getElementById("gdriveSelect");
+    log.debug("Selected index :" + select.selectedIndex);
+
+    if (select.options[select.selectedIndex].value === "titleOption") {
+        log.debug("Selected title option");
+    } else {
+        log.debug("Selected real option");
+
+        document.getElementById("gdriveLoad").disabled = false;
+        document.getElementById("gdriveDelete").disabled = false;
+        select.title = select.options[select.selectedIndex].title;
+    }
+
+    log.debug("[EXIT]");
+}
+
+function showErrorAndReset(source, message) {
+    log.debug("[START]");
+
+    gdrive.reset();
+    gdriveSetState();
+    hideLoader();
+
+    alert("Some error occured while " + source + " : \n\n" + message + "\n\n" + "Try to sign in again!")
+
+    log.debug("[EXIT]");
+}
+
+function gdriveSignInAction() {
+    log.debug("[START]");
+
+    showLoader();
+    gdrive.reset();
+    gdriveSetState();
+
+    try {
+        gdrive.doOAuth2(gdriveFetchData, (e) => showErrorAndReset("signing in to google", e));
+    } catch(e) {
+        log.error("Exception error while signing in to google : " + e);
+        showErrorAndReset("signing in to google", e);
+    }
+
+    log.debug("[EXIT]");
+}
+
+async function gdriveFetchData() {
+    log.debug("[START]");
+
+    try {
+        await gdrive.initDirectory();
+        await gdrive.listFiles();
+        gdriveSetState();
+        hideLoader();
+    } catch(e) {
+        showErrorAndReset("fetching data from Google Drive", e)
+    }
+
+    log.debug("[EXIT]");
+}
+
+async function gdriveSaveAction(type) {
+    log.debug("[START]")
+    log.debug("Type :" + type);
+
+    let select = document.getElementById("gdriveSelect");
+    let defaultFileName = "";
+
+    if (select.options[select.selectedIndex].value === "titleOption") {
+        log.debug("There is no selected file");
+        const date = new Date().toISOString().substring(0, 10);
+        defaultFileName = "TextNotes_" + date + "." + type;
+    } else {
+        log.debug("There is a selected file");
+        defaultFileName = select.options[select.selectedIndex].text.split(".")[0] + (type === "tn" ? ".tn" : ".txt");
+    }
+
+    let fileName = "";
+    while(fileName.length === 0) {
+        log.debug("Get filename");
+        fileName = window.prompt("Please enter a file name :", defaultFileName);
+
+        if (fileName === null) {
+            log.debug("[CANCEL]")
+            return;
+        }
+    }
+
+    fileName = fileName.split(".")[0] + (type === "tn" ? ".tn" : ".txt");
+    log.debug("Filename : " + fileName);
+
+    let existingFileId = "";
+
+    let index = 1;
+    for(;index < select.length && select.options[index].text !== fileName; index++);
+
+    log.debug("Found existing element : " + (index < select.length));
+
+    if (index < select.length) {
+        const message = fileName + "\n\nThis file name is already existing. Do you want to overwrite it?";
+        if (!window.confirm(message)) {
+            log.debug("[CANCEL]")
+            return;
+        }
+
+        existingFileId = select.options[index].value;
+        log.debug("Existing fileId : " + existingFileId);
+    }
+
+    let data;
+    if (type == "tn") {
+        let content = model.exportData();
+
+        try {
+            data = pako.gzip(content , { to: 'string' });
+        } catch (error) {
+            alert("Some error occured while compressing data : '" + error + "'");
+            log.error("Data couldn't be compressed by pako lib : " + error);
+            return;
+        }
+
+        log.debug("Compression has been successful!");
+    } else {
+        let content = model.exportDataAsText();
+
+        if (navigator.platform.indexOf("Win") != -1) {
+            data = content.replace(/\n/g,'\r\n');
+        } else {
+            data = content;
+        }
+
+        log.debug("Text export has been successful!");
+    }
+
+    try {
+        showLoader();
+
+        if (existingFileId.length === 0) {
+            log.debug("Saving file");
+            await gdrive.saveFile(data, fileName);
+        } else {
+            log.debug("Updating file");
+            await gdrive.updateFile(data, fileName, existingFileId);
+        }
+
+        await gdriveFetchData();
+
+        hideLoader();
+    } catch (e) {
+        showErrorAndReset("saving data to Google Drive", e);
+    }
+
+    log.debug("[EXIT]");
+}
+
+async function gdriveLoadAction() {
+    log.debug("[START]")
+
+    try {
+        let select = document.getElementById("gdriveSelect");
+        const fileId = select.options[select.selectedIndex].value;
+
+        showLoader();
+        const data = await gdrive.loadFile(fileId)
+        hideLoader();
+        importAction3({ target : { result : data }});
+    } catch(e) {
+        showErrorAndReset("loading file from Google Drive", e);
+    }
+
+    log.debug("[EXIT]");
+}
+
+async function gdriveDeleteAction() {
+    log.debug("[START]")
+
+    try {
+        let select = document.getElementById("gdriveSelect");
+        const fileId = select.options[select.selectedIndex].value;
+
+        let confirmMessage = "Are you sure to delete '" + select.options[select.selectedIndex].text + "' file ?"
+        if (!window.confirm(confirmMessage)) {
+            return;
+        }
+
+        showLoader();
+        await gdrive.deleteFile(fileId)
+        await gdriveFetchData();
+
+        hideLoader();
+    } catch(e) {
+        showErrorAndReset("deleting file from Google Drive", e);
+    }
+
+    log.debug("[EXIT]")
 }
 
 window.onload = init;

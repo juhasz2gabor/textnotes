@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
 
-    "name": "TextNotes",
+    "name": "TextNotes-Beta",
     "description": "TextNotes is a note extension with various useful features.",
     "version": "1.7",
 
@@ -18,7 +18,15 @@
         "scripts": ["lib/logger/log.js", "background/background.js"]
     },
 
-    "permissions": ["storage", "unlimitedStorage", "contextMenus", "activeTab", "notifications"],
+    "permissions": [
+        "storage",
+        "unlimitedStorage",
+        "contextMenus",
+        "activeTab",
+        "notifications",
+        "identity",
+        "*://www.googleapis.com/*"
+    ],
 
     "browser_action": {
         "browser_style" : true,

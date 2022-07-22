@@ -22,12 +22,28 @@ button
     padding-left: 8px;
     padding-right: 8px;
     text-align: center;
-    margin-bottom: 5px
+    margin-bottom: 5px;
+    margin-right:2px;
 }
 
 button::-moz-focus-inner
 {
     border: 0;
+}
+
+button:disabled,
+button[disabled]{
+    opacity: 0.67;
+}
+
+select
+{
+    height: 30px;
+}
+
+select:disabled,
+select[disabled]{
+    opacity: 0.67;
 }
 
 input
@@ -51,4 +67,37 @@ input
 {
     background-color: transparent;
     border: none;
+}
+
+.blur_effect {
+    filter: blur(2px);
+}
+
+.loader_container
+{
+    position:absolute;
+    top: 0px;
+    left : 0px;
+    width: 100%;
+    height: 100%;
+    z-index : 100;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.loader
+{
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #3BB9FF;
+    border-bottom: 5px solid #3BB9FF;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }

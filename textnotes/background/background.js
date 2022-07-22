@@ -182,7 +182,7 @@ function onMessage(message) {
         message.hasOwnProperty("tabId")) {
         switch(message.command) {
             case "add" :
-                log.debug("Command :'add', tabId :" + message.tabId);
+                log.debug("Command :'add', tabId :" + message.tabId + ", " + typeof(message.tabId));
                 textnotesTabIds.add(message.tabId);
                 break;
 
@@ -234,7 +234,7 @@ async function initBackground() {
     log.debug("[START]");
 
     textnotesTabIds = new Set();
-    textNotesURL = browser.extension.getURL("page/textnotes.html");
+    textNotesURL = browser.runtime.getURL("page/textnotes.html");
     log.debug("textNotesUrl : " + textNotesURL);
 
     createContextMenu();

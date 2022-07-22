@@ -1159,7 +1159,7 @@ function openPreferenceDialog() {
     let title = "Preferences";
     let source = "page/dialogs/preferences/preferences.html";
     let width = 650;
-    let height = 280;
+    let height = 455;
 
     model.save();
     dialog.show(title, source, width, height);

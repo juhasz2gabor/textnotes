@@ -174,8 +174,9 @@ Logger.create = async function (noTabInfo = false, prefix = "") {
         }
     }
 
+    let tabIdWithPrefix = (prefix === "") ? tabId : prefix + tabId;
     let pageId = prefix + windowId + ":" + tabId;
     let logLevel = await Logger.getLogLevel();
 
-    return new Logger(pageId, logLevel, windowId, tabId);
+    return new Logger(pageId, logLevel, windowId, tabIdWithPrefix);
 }
