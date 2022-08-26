@@ -1169,7 +1169,7 @@ function openHelpDialog() {
     let title = "Help";
     let source = "page/dialogs/help/help.html"
     let width = 770;
-    let height = 600;
+    let height = 625;
 
     dialog.show(title, source, width, height);
 }

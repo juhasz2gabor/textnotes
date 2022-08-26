@@ -1,4 +1,4 @@
-<html>
+ <html>
     <head>
         <title>TextNotes Help Page</title>
         <meta charset="UTF-8">
@@ -31,8 +31,9 @@ href="https://juhasz2gabor.github.io/textnotes.help"><i>https://juhasz2gabor.git
 <h3><span class="number">17.</span><a href="#newbug">What to do if I find a bug?</a></h3>
 <h3><span class="number">18.</span><a href="#donate">How can I contribute to the TextNotes project?</a></h3>
 <h2>Troubleshooting</h2>
-<h3><span class="number">1.</span><a href="#fatal">TextNotes does not start or the toolbar icon has disappeared.</a></h3>
-<h3><span class="number">2.</span><a href="#removed">By mistake I selected all text in TextArea and everything
+<h3><span class="number">1.</span><a href="#upgrade">After upgrade to Ubuntu 22.04 TextNotes disappeared.</a></h3>
+<h3><span class="number">2.</span><a href="#fatal">TextNotes does not start or the toolbar icon has disappeared.</a></h3>
+<h3><span class="number">3.</span><a href="#removed">By mistake I selected all text in <i>textarea</i> and everything
     disappeared after pressing a button.</a></h3>
 <br>
 
@@ -46,13 +47,13 @@ TextNotes is a note extension with various useful features:
     <li> Showing titles of notes in flat tree control
     <li> Maintaining notes : <i>add</i>, <i>delete</i>, <i>drag&drop</i>, <i>context menu</i>
     <li> Trashbin for deleted notes
-    <li> Changing TextArea size
+    <li> Changing <i>textarea</i> size
     <li> Keyboard support
     <li> Hyperclick on URLs, supporting foreground and background tabs
     <li> Supporting display modes : <i>dark</i>, <i>light</i>, <i>auto</i>
-    <li> Saving and loading data
+    <li> Saving and loading data on local storage and to/from <i>Google Drive</i>
     <li> Creating notes from webpages
-    <li> Synchronization among multiple local instances
+    <li> Synchronization among multiple local instances on the same computer
 </ul>
 </div>
 <a class="gotop" href="#faq">Return to top</a><br>
@@ -68,6 +69,8 @@ TextNotes is a note extension with various useful features:
 <tr><td>contextMenus</td><td>Using context menu</td></tr>
 <tr><td>activeTab</td><td>Launching TextNotes and using context menu</td></tr>
 <tr><td>notifications</td><td>Showing TextNotes notifications</td></tr>
+<tr><td>identity</td><td rowspan="2"><i>Google Drive</i></td></tr>
+<tr><td>*://www.googleapis.com/*</td></tr>
 </table>
 </div>
 <a class="gotop" href="#faq">Return to top</a><br>
@@ -90,10 +93,18 @@ TextNotes can run in a tab or in a popup window. You can launch it various ways.
     <li>Press Ctrl and Click on TextNotes icon on <i>toolbar</i>.
     <li>Press Ctrl+Alt+P keys. It is configurable in <i>Manage Extension Shortcuts</i>
 </ul>
-<br>
-And TextNotes will be launched on a background tab if you click on <i>Add Selected Text to TextNotes</i> in context
-menu after text selection and there is no running TextNotes in any window.
+
+By default TextNotes tries to prevent users from opening 2 instances of TextNotes tabs on the same window so when you
+you want to open the second instance of TextNotes it will set the existing TextNotes tab as active instead of opening
+a new one. However sometimes it can be useful if you have 2 or more TextNotes tabs. Two easy ways to do it:
+<ul>
+    <li>Select the <i>Duplicate Tab</i> item on tab context menu.<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>OR</b>
+    <li>Copy and paste the <i>URL</i> of TextNotes to an addressbar of a new tab, starting with <i>moz&#8209;extension://</i>
+</ul>
+
 </div>
+
 <a class="gotop" href="#faq">Return to top</a><br>
 
 <!-- Keyboard support  -->
@@ -108,10 +119,10 @@ menu after text selection and there is no running TextNotes in any window.
 <tr><td>Del</td><td>Delete the current note</td></tr>
 <tr><td>Up Arrow</td><td>Show the previous note</td></tr>
 <tr><td>Down Arrow</td><td>Show the next note</td></tr>
-<tr><td>Tab</td><td>Jump to TextArea</td></tr>
+<tr><td>Tab</td><td>Jump to <i>textarea</i></td></tr>
 </table>
 <br>
-<i>TextArea</i> has focus :
+<i>Textarea</i> has focus :
 <table class="table_hot_key">
 <tr><th>Key(s)</th><th>Action</th></tr>
 <tr><td>Tab</td><td>Print tab</td></tr>
@@ -124,7 +135,9 @@ menu after text selection and there is no running TextNotes in any window.
 <hr>
 <h2 class="title" id="hyperclick">How to use hyperclick?</h2>
 <div class="answer">
-Mouse cursor on <i>TextArea</i>:
+With hyperclick you can open links in <i>textarea</i> easy way.
+<br><br>
+Mouse cursor on <i>textarea</i>:
 <table class="table_hyperclick">
 <tr><th>Mouse + Key(s)</th><th>Action</th></tr>
 <tr><td>Ctrl + Long Click (CapsLock Off)</td><td>Open link in a new foreground tab</td></tr>
@@ -189,6 +202,34 @@ TextNotes supports two kinds of file formats :
 You can save and load data using either kind.<br><br>
 The format of the plain text file is public so you can feed TextNotes with data files that you created.
 Details : <a href="#feed">Can TextNotes load data files created by users?</a>
+
+<br><br>
+&emsp;&emsp;<b>Local Storage</b><br><br>
+You can load and save your notes on any local storage (<i>hdd, usb, memory card</i>).<br>
+<i>Delete All Notes</i> button clears all of the notes.
+
+<br><br>
+&emsp;&emsp;<b>Google Drive Storage</b><br><br>
+TextNotes supports <i>Google Drive</i> so you can use a cloud storage to backup your data.<br>
+To use <i>Google Drive</i> you need to have an <i>Google</i> account and you have to sign in.<br>
+The <i>select list</i> shows the existing files on cloud. If you select one of them, you can load or delete it.<br>
+Your files will be stored in <b><i>.TextNotes</i></b> directory under the root of your <i>Google Drive</i> storage.
+You can read files but you can not modify them.<br><br>
+
+<span class="warning">Important:</span>
+<ul>
+    <li>Your data is stored on your google drive storage so nobody else can see it.
+    <li>TextNotes can see just its own files. TextNotes can not see your other files.
+    <li>TextNotes can see its own files just after you sign in to <i>Google</i> in your browser.
+    <li>Signing process is handled by Firefox so TextNotes does not know either your username or your password.
+</ul>
+<b>More details<b> :
+<ul>
+    <li><a target="_blank" href="https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/identity">
+        <i>Identity method to use OAuth2 on Firefox</i></a> <span class="extlink">[↷]</span>
+    <li><a target="_blank" href="https://developers.google.com/identity/protocols/oauth2/javascript-implicit-flow">
+        <i>OAuth 2.0 for Client-side Web Applications</i></a> <span class="extlink">[↷]</span>
+</ul>
 </div>
 <a class="gotop" href="#faq">Return to top</a><br>
 
@@ -275,11 +316,10 @@ TextNotes is regularly tested manually and by automated tests on :
 <ul>
     <li>Windows and Linux operating systems.
     <li>The previous, the current and the next versions of Firefox.
-    <li>The current version of Firefox ESR
 </ul>
 Take a look at a <a target="_blank" href="https://juhasz2gabor.github.io/textnotes.report/"><i>test report of TextNotes</i>.</a>
 <span class="extlink">[↷]</span></a><br><br>
-<b>If a bug is found, it will be fixed and released immediately!</b>
+<span class="warning">If a bug is found, it will be fixed and released immediately!</span>
 </div>
 <a class="gotop" href="#faq">Return to top</a><br>
 
@@ -356,11 +396,11 @@ There are 2 known minor bugs:
 <ul>
     <li><b>Browser gets stuck for a very short moment</b><br>
 Sometimes when you write some text
-in TextArea, characters do not immediately appear but there is some delay. You feel that your browser
+in <i>textarea</i>, characters do not immediately appear but there is some delay. You feel that your browser
 always gets stuck for a very short moment and CPU works a bit more. If you restart TextNotes, the bug should
 disappear.<br><br>
-    <li><b>In textarea <i>undo</i> does not work after pressing <i>tab</i> key.</b><br>
-In TextArea the <i>tab</i> key usage removes the undo/redo history.
+    <li><b>In <i>textarea</i> <i>undo</i> does not work after pressing <i>tab</i> key.</b><br>
+In <i>textarea</i> the <i>tab</i> key usage removes the undo/redo history.
 </ul>
 </div>
 <a class="gotop" href="#faq">Return to top</a><br>
@@ -408,6 +448,26 @@ TextNotes project is looking for volunteer testers to check features and to hunt
 <a target="_blank" href="mailto:gabor.shepherd.work@gmail.com"><i>send the developer an email</i></a>
 <span class="extlink">[↷]</span>
 <br>
+</div>
+<a class="gotop" href="#faq">Return to top</a><br>
+<hr>
+
+<!-- After upgrade TextNotes disappears -->
+<h2 class="title" id="upgrade">After upgrade to Ubuntu 22.04 TextNotes disappeared</h2>
+<div class="answer">
+Ubuntu 22.04 includes Firefox as a Snap app by default. This Snap package is the only version of Firefox
+included ‘out of the box’. During the upgrade Firefox should import your old profile directory to the new path.
+Unfortunately sometimes it does not happen.<br><br>
+<b>2 solutions</b> :
+<ul>
+    <li>Copy the old profile directory to the new place :<br>
+        <a target="_blank" href="https://askubuntu.com/a/1414759">
+        &emsp;<i>Where does Firefox (Snap) store the profiles?</i></a> <span class="extlink">[↷]</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>OR</b>
+    <li>Use Firefox package instead of snapshot and it will use your old profile again :<br>
+        <a target="_blank" href="https://www.omgubuntu.co.uk/2022/04/how-to-install-firefox-deb-apt-ubuntu-22-04">
+        &emsp;<i>How to Install Firefox as a .deb on Ubuntu 22.04</i></a> <span class="extlink">[↷]</span>
+</ul>
 </div>
 <a class="gotop" href="#faq">Return to top</a><br>
 <hr>
@@ -468,10 +528,10 @@ And now go through the list and try to find your case.
 
 <!-- Text Disappeared -->
 <hr>
-<h2 class="title" id="removed">By mistake I selected all text in TextArea<br>and everything has disappeared after
+<h2 class="title" id="removed">By mistake I selected all text in <i>textarea</i><br>and everything has disappeared after
 pressing a button.</h2>
 <div class="answer">
-TextArea has an undo/redo feature that you can use in this case.
+<i>Textarea</i> has an undo/redo feature that you can use in this case.
 <table class="table_undoredo">
 <tr><th>Key(s)</th><th>Action</th></tr>
 <tr><td>Ctrl+z</td><td>Undo</td></tr>
