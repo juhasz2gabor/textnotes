@@ -192,12 +192,10 @@ function newVersionMessage()
 {
     let welcomeMessage =
               "Thanks for using TextNotes!\n\n"
-            + "New things in version 1.7 :\n\n";
+            + "New things in version 1.8 :\n\n";
 
     welcomeMessage += ""
-            + "- Display modes : dark, light, auto\n"
-            + "- Creating notes from webpages : appending to top note\n"
-            + "- Minor bug fixes\n"
+            + "- Browser tab icon, favicon\n"
 
     welcomeMessage +=
             "\nif you find a bug, please report it : gabor.shepherd.work@gmail.com\n"
