@@ -234,7 +234,7 @@ async function initBackground() {
     log.debug("[START]");
 
     textnotesTabIds = new Set();
-    textNotesURL = browser.extension.getURL("page/textnotes.html");
+    textNotesURL = browser.runtime.getURL("page/textnotes.html");
     log.debug("textNotesUrl : " + textNotesURL);
 
     createContextMenu();
