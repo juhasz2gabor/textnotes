@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
 
-    "name": "TextNotes-Beta",
+    "name": "TextNotes-rc",
     "description": "TextNotes is a note extension with various useful features.",
     "version": "1.8",
 
@@ -9,7 +9,7 @@
 
     "applications": {
        "gecko": {
-           "id": "textnotes-beta@gaborjuhaszprojects.com",
+           "id": "textnotes-rc@gaborjuhaszprojects.com",
            "strict_min_version" : "78.0"
        }
     },
